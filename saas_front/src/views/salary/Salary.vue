@@ -42,16 +42,21 @@
             </el-card>
 
             <el-table :data="list" border style="width: 100%">
-                <el-table-column prop="employee.employeeDes" label="姓名" width="70" align="center"
+                <el-table-column prop="id" label="编号" align="center"> </el-table-column>
+                <el-table-column prop="name" label="姓名" width="70" align="center"
                     fixed="left"></el-table-column>
-                <el-table-column prop="baseSalary" label="基本工资" align="center"> </el-table-column>
+                <el-table-column prop="phone" label="电话" align="center"> </el-table-column>
+                <el-table-column prop="basicSalary" label="基本工资" align="center"> </el-table-column>
                 <el-table-column prop="allowance" label="津贴" align="center"> </el-table-column>
                 <el-table-column prop="bonus" label="奖金" align="center"> </el-table-column>
-                <el-table-column prop="subsidy" label="补助" align="center"> </el-table-column>
+                <el-table-column prop="gx" label="工资小计" align="center"> </el-table-column>
                 <el-table-column prop="deduction" label="扣款" align="center"> </el-table-column>
-                <el-table-column prop="personalIncomeTax" label="个税" align="center"> </el-table-column>
-                <el-table-column prop="insurance" label="保险金额" align="center"> </el-table-column>
-                <el-table-column prop="actualSalary" label="实发工资" align="center">
+                <el-table-column prop="deductionDescription" label="扣款原因" align="center"> </el-table-column>
+                <el-table-column prop="yg" label="应发工资" align="center"> </el-table-column>
+                <el-table-column prop="individualIncomeTax" label="个人免税额" align="center"> </el-table-column>
+                <el-table-column prop="gs" label="个人所得税" align="center"> </el-table-column>
+                <el-table-column prop="sp" label="社保公积金" align="center"> </el-table-column>
+                <el-table-column prop="zg" label="实发工资" align="center">
                 </el-table-column>
                 <el-table-column prop="payoutDate" label="发放日期" align="center">
                     <template #default="{ row }">

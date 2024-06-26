@@ -123,15 +123,15 @@ export const menuRoutes = [
         component: () => import('@/views/salary/Salary.vue'),
       },
       {
-        path: '/salary',
+        path: '/salary/Salary',
         meta: { title: '社保公积金', menu: true },
-        component: () => import(''),
+        component: () => import('@/views/salary/Salary.vue'),
       },
       {
-        path: '/salary',
+        path: '/salary/Salary',
         meta: { title: '社保公积金设置', menu: true },
-        component: () => import(''),
-      },
+        component: () => import('@/views/salary/Salary.vue'),
+      }
     ]
   },
   //员工工资管理
