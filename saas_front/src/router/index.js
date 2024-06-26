@@ -122,14 +122,23 @@ export const menuRoutes = [
         meta: { title: '工资表', menu: true },
         component: () => import('@/views/salary/Salary.vue'),
       },
-
+      {
+        path: '',
+        meta: { title: '社保公积金', menu: true },
+        component: () => import('@/views/salary/Salary.vue'),
+      },
+      {
+        path: '',
+        meta: { title: '社保公积金设置', menu: true },
+        component: () => import('@/views/salary/Salary.vue'),
+      },
     ]
   },
   //员工工资管理
   {
     path: '/PersonalSalary',
     component: () => import('@/layout/Layout.vue'),
-    meta: { title: '工资管理', menu: true, icon: 'el-icon-bank-card'},
+    meta: { title: '员工工资', menu: true, icon: 'el-icon-bank-card'},
     children: [
       {
         path: '',
