@@ -20,7 +20,7 @@
             <el-card>
                 <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addopen">新增凭证字</el-button>
                 <el-table :data="list" style="width: 100%;margin-top: 15px;" :header-row-class-name="tableHeaderClassName">
-                <el-table-column prop="voucherWordID" label="序号" align="center" width="100"> </el-table-column>
+                <el-table-column prop="voucherWordId" label="序号" align="center" width="100"> </el-table-column>
                 <el-table-column prop="voucherWord" label="凭证字" align="center">
                     <template #default="{ row }">
                         <div>
@@ -114,7 +114,7 @@ export default {
         return {
             tableHeaderClassName: 'custom-table-header',// 自定义的表头样式类名
             list: [],
-            voucherWordID: '',
+            voucherWordId: '',
             userFormData: {
                 isDefault: '',
                 showTitel: '',
@@ -144,7 +144,7 @@ export default {
             this.userFormData.isDefault = row.isDefault;
             this.userFormData.showTitel = row.showTitel;
             this.userFormData.voucherWord = row.voucherWord
-            this.voucherWordID = row.voucherWordID
+            this.voucherWordId = row.voucherWordId
         },
         async out(row) {
 
@@ -153,12 +153,12 @@ export default {
                 this.$message.warning('不能删除默认项');
             } else {
                 const data = {
-                    voucherWordID: row.voucherWordID,
+                    id: row.voucherWordId,
                 }
                 const res = await axios({
                     url: "http://localhost:8081/voucherWord/delete",
-                    method: "post",
-                    data: data
+                    method: "delete",
+                    params: data
                 })
                 this.getList()
             }
@@ -168,12 +168,12 @@ export default {
         async submit() {
 
             const data = {
-                voucherWordID: this.voucherWordID,
+                voucherWordId: this.voucherWordId,
                 ...this.userFormData
             }
             const res = await axios({
                 url: "http://localhost:8081/voucherWord/update",
-                method: "post",
+                method: "put",
                 data: data
             })
             this.getList()
