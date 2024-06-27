@@ -179,7 +179,7 @@ export default {
             }
             const res = await axios({
                 url: "http://localhost:8081/accounting/update",
-                method: "put",
+                method: "post",
                 data: data
             })
             this.getList()
@@ -194,6 +194,7 @@ export default {
                 ...this.userFormData
             }
             const res = await axios({
+                url: "http://localhost:8081/accounting/add",
                 url: "http://localhost:8081/accounting/add",
                 method: "post",
                 data: data

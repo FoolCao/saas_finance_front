@@ -63,9 +63,6 @@
                         <el-button @click="submit" type="primary">提交</el-button>
                         <el-button @click="cancel" type="info">取消</el-button>
                     </el-form-item>
-
-
-
                 </el-form>
             </el-dialog>
 
@@ -158,23 +155,11 @@ export default {
                 }
               try {
                 const res = await axios({
-                  url: "http://localhost:8081/summary/delete",
-                  method: "delete",
-                  params: data
+                    url: "http://localhost:8081/summary/delete",
+                    method: "delete",
+                    data: data
                 })
-
-                // 判断当前页是否是最后一页且只有一条数据
-                if (this.$data.pageno === Math.ceil(this.total / this.pagesize) && this.total % this.pagesize === 1) {
-                  // 如果是最后一页且只有一条数据，页码减一
-                  this.$data.pageno--;
-                }
-
-                // 查询数据
-                await this.getList();
-              } catch (error) {
-                console.error('Error deleting:', error);
-                // 处理错误
-              }
+                this.getList()
             }
 
         },
