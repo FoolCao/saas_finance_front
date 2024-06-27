@@ -17,7 +17,7 @@
                             <el-form-item>
                                 <el-date-picker v-model="value2" type="datetimerange" :picker-options="pickerOptions"
                                     range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right">
-                                </el-date-picker>   
+                                </el-date-picker>
                             </el-form-item>
                             <el-form-item>
                                 <el-button @click="search()" type="primary" icon="el-icon-search">搜索</el-button>
@@ -44,37 +44,33 @@
         <el-card style="margin-top: 20px;">
 
             <el-card>
-                <span style="font-size: 16px;font-weight: bold;">员工工资表</span>
+                <span style="font-size: 16px;font-weight: bold;">社保公积金</span>
             </el-card>
 
             <el-table :data="list" border style="width: 100%">
-                <!-- <el-table-column prop="id"  label="编号" align="center" > </el-table-column> -->
+                <!-- <el-table-column prop="id" label="编号" align="center"> </el-table-column> -->
                 <el-table-column prop="name" label="姓名" width="70" align="center" fixed="left"></el-table-column>
-                <el-table-column prop="phone" label="电话" align="center"> </el-table-column>
-                <el-table-column prop="basicSalary" label="基本工资" align="center"> </el-table-column>
-                <el-table-column prop="allowance" label="津贴" align="center"> </el-table-column>
-                <el-table-column prop="bonus" label="奖金" align="center"> </el-table-column>
-                <el-table-column prop="gx" label="工资小计" align="center"> </el-table-column>
-                <el-table-column prop="deduction" label="扣款" align="center"> </el-table-column>
-                <el-table-column prop="deductionDescription" label="扣款原因" align="center"> </el-table-column>
-                <el-table-column prop="yg" label="应发工资" align="center"> </el-table-column>
-                <el-table-column prop="individualIncomeTax" label="个人免税额" align="center"> </el-table-column>
-                <el-table-column prop="gs" label="个人所得税" align="center"> </el-table-column>
-                <el-table-column prop="sp" label="社保公积金" align="center"> </el-table-column>
-                <el-table-column prop="zg" label="实发工资" align="center">
-                </el-table-column>
+                <el-table-column prop="phone" label="电话 " align="center"> </el-table-column>
+                <el-table-column prop="sc" label="公司社保公积金" align="center"> </el-table-column>
+                <el-table-column prop="sp" label="个人社保公积金" align="center"> </el-table-column>
                 <el-table-column prop="created" label="发放日期" align="center">
                     <template #default="{ row }">
                         <div>
-                            <i class="el-icon-time "></i> {{ row.created }}
+                            <i class="el-icon-time"></i> {{ row.created }}
                         </div>
                     </template>
                 </el-table-column>
 
-                <el-table-column fixed="right" label="生成凭证" align="center">
+                <!-- <el-table-column fixed="right" label="生成凭证" align="center">
                     <template #default="{ row }">
-                        <el-button v-if="row.voucherState === 0" type="text" size="medium" icon="el-icon-document"
+                        <el-button v-if="row.isToVoucher === '否'" type="text" size="medium" icon="el-icon-document"
                             @click="updateApprovalStatus(row)">生成凭证</el-button>
+                    </template>
+                </el-table-column> -->
+
+                <el-table-column fixed="right" label="详情" align="center" width="200px">
+                    <template #default="{ row }">
+                        <el-button type="primary" icon="el-icon-info" circle @click="update(row)"></el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -86,21 +82,20 @@
         </el-card>
 
         <!-- 弹窗区域 -->
-        <el-dialog :title="actionType == 'add' ? '新增员工工资信息' : '编辑员工工资信息'" :visible.sync="dialogFormVisible"
-            width="700px" style="font-size: 24px;">
+        <el-dialog title="新增" :visible.sync="addFormVisible" width="700px" style="font-size: 24px;">
 
 
             <el-form :model="userFormData" class="demo-form-inline" label-width="100px">
 
                 <!-- 第一行 -->
-                <el-form-item label="工号">
+                <el-form-item label="员工编号">
                     <!-- <el-select v-model="selectedEmployee" placeholder="选择员工" clearable :disabled="actionType === 'edit'"
                         size="medium">
                         <el-option :label="employee.employeeDes" :value="employee.employeeID" :key="employee.employeeID"
                             v-for="employee in employeeList" />
                     </el-select> -->
-                    <el-input v-model="userFormData.adminId" placeholder="员工编号"
-                    controls-position="right" style="width: 200px;"></el-input>
+                    <el-input v-model="userFormData.adminId" placeholder="员工编号" controls-position="right"
+                        style="width: 200px;"></el-input>
                 </el-form-item>
                 <el-row>
                     <el-col :span="12">
@@ -140,10 +135,10 @@
                                 size="medium"></el-input-number>
                         </el-form-item>
                     </el-col>
-                   
+
                 </el-row>
-                <el-row> 
-                     <el-col :span="12">
+                <el-row>
+                    <el-col :span="12">
                         <el-form-item label="扣款原因">
                             <el-input v-model="userFormData.deductionDescription" placeholder="扣款原因"
                                 controls-position="right" style="width: 400px;"></el-input>
@@ -169,6 +164,29 @@
                 </el-form-item>
 
             </el-form>
+        </el-dialog>
+
+        <!-- 弹窗区域 -->
+        <el-dialog title="详情" :visible.sync="detailFormVisible" width="700px" style="font-size: 24px;">
+
+            <!-- 员工工资表 -->
+            <el-card style="margin-top: 20px;">
+
+                <!-- <el-card>
+                    <span style="font-size: 16px;font-weight: bold;">详情</span>
+                </el-card> -->
+
+                <el-table :data="list" border style="width: 100%">
+                    <!-- <el-table-column prop="id" label="编号" align="center"> </el-table-column> -->
+                    <el-table-column prop="phone" label="电话" align="center"> </el-table-column>
+                    <el-table-column prop="sc" label="公司社保公积金" align="center"> </el-table-column>
+                    <el-table-column prop="sp" label="个人社保公积金" align="center"> </el-table-column>
+                </el-table>
+
+
+            </el-card>
+
+
         </el-dialog>
     </div>
 </template>
@@ -203,13 +221,15 @@ export default {
                 basicSalary: 0.00,
                 allowance: 0.00,
                 bonus: 0.00,
+                subsidy: 0.00,
                 deduction: 0.00,
                 deductionDescription: ''
             },
             employeeID: '',
             actionType: '',
             salaryID: '',
-            dialogFormVisible: false,
+            addFormVisible: false,
+            detailFormVisible: false,
             employeeList: [],
             selectedEmployee: '',
 
@@ -248,19 +268,23 @@ export default {
         this.bookID = localStorage.getItem('bookID');
         this.getList()
     },
+
     methods: {
+
         async updateApprovalStatus(row) {
             console.log(row)
+            const data = {
+                salaryId: row.salaryId,
+                isToVoucher: "是"
+            }
             const res = await axios({
-                url: "http://localhost:8081/salary/updateStatus",
-                method: "get",
-                params:{
-                    id: row.id
-                }
+                url: "http://localhost:8080/salary/update",
+                method: "post",
+                data: data
             })
             // this.getList()
             localStorage.setItem('summary', this.summary)
-            localStorage.setItem('debitAmount', row.zg)
+            localStorage.setItem('debitAmount', row.actualSalary)
             localStorage.setItem('text', this.text)
             // 等待两秒后跳转页面
             Message.success('即将进入凭证界面')
@@ -278,7 +302,7 @@ export default {
             // };
             const res = await axios({
                 method: "get",
-                url: "http://localhost:8081/salary/list",
+                url: "http://localhost:8081/accumulate/list",
                 params: {
                     page: this.pageno,
                     limit: this.pagesize,
@@ -300,13 +324,12 @@ export default {
             /* console.log(this.list) */
             this.total = res.data.count;
 
-           
+
         },
         // 点击搜索
         search() {
             this.getList()
         },
-       
         // 页码改变
         pagechange(pageno) {
             // 条件改变
@@ -317,21 +340,26 @@ export default {
         // 打开新增弹窗，
         addOpen() {
             // 打开弹窗
-            this.dialogFormVisible = true;
+            this.addFormVisible = true;
             // 记录状态
             this.actionType = 'add';
             this.userFormData = {
-                basicSalary: 0.00,
+                baseSalary: 0.00,
                 allowance: 0.00,
                 bonus: 0.00,
+                subsidy: 0.00,
                 deduction: 0.00,
-                deductionDescription: '',
+                personalIncomeTax: 0.00,
+                insurance: 440.00,
+                actualSalary: 0.00
             };
+            this.employeeID = this.selectedEmployee;
+            this.selectedEmployee = ''
         },
         //修改弹窗
-        edit(row) {
+        update(row) {
             // 打开弹窗
-            this.dialogFormVisible = true
+            this.detailFormVisible = true
             // 数据回显
             this.userFormData.baseSalary = row.baseSalary
             this.userFormData.allowance = row.allowance
@@ -403,12 +431,12 @@ export default {
                 method: 'post',
                 data: data
             })
-            if(res.data.code==0){
-            this.dialogFormVisible = false
-            this.getList()}
-            if(res.data.code==20020)
-            {
-            this.$message.error('该员工不存在');
+            if (res.data.code == 0) {
+                this.addFormVisible = false
+                this.getList()
+            }
+            if (res.data.code == 20020) {
+                this.$message.error('该员工不存在');
             }
         }
     },

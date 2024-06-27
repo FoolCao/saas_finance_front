@@ -123,9 +123,9 @@ export const menuRoutes = [
         component: () => import('@/views/salary/Salary.vue'),
       },
       {
-        path: '/salary/Salary',
+        path: '/salary/Accumulation',
         meta: { title: '社保公积金', menu: true },
-        component: () => import('@/views/salary/Salary.vue'),
+        component: () => import('@/views/salary/Accumulation.vue'),
       },
       {
         path: '/salary/Salary',
