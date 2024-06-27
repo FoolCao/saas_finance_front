@@ -93,6 +93,11 @@ export const menuRoutes = [
         path: '/Role',
         component: () => import('@/views/system/Role'),
         meta: { title: '角色管理' },
+      },
+      {
+        path: '/LogsUri',
+        component: () => import('@/views/system/LogsUri'),
+        meta: { title: '操作日志' },
       }
     ]
   },

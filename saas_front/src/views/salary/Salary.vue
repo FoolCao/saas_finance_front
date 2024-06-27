@@ -17,7 +17,7 @@
                             <el-form-item>
                                 <el-date-picker v-model="value2" type="datetimerange" :picker-options="pickerOptions"
                                     range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right">
-                                </el-date-picker>   
+                                </el-date-picker>
                             </el-form-item>
                             <el-form-item>
                                 <el-button @click="search()" type="primary" icon="el-icon-search">搜索</el-button>
@@ -37,7 +37,15 @@
                     </el-col>
                 </el-row>
             </div>
-
+            <div>
+                <el-upload class="upload-demo" ref="upload" action="http://localhost:8081/salary/import"
+                    :on-preview="handlePreview" :on-remove="handleRemove" :file-list="file" :auto-upload="false">
+                    <el-button slot="trigger" size="small" type="">选取文件</el-button>
+                    <el-button style="margin-left: 10px;" size="small" type="primary"
+                        @click="submitUpload">导入工资</el-button>
+                    <el-button size="max" type="success" @click="submitExport">导出工资</el-button>
+                </el-upload>
+            </div>
         </el-card>
 
         <!-- 员工工资表 -->
@@ -99,8 +107,8 @@
                         <el-option :label="employee.employeeDes" :value="employee.employeeID" :key="employee.employeeID"
                             v-for="employee in employeeList" />
                     </el-select> -->
-                    <el-input v-model="userFormData.adminId" placeholder="员工编号"
-                    controls-position="right" style="width: 200px;"></el-input>
+                    <el-input v-model="userFormData.adminId" placeholder="员工编号" controls-position="right"
+                        style="width: 200px;"></el-input>
                 </el-form-item>
                 <el-row>
                     <el-col :span="12">
@@ -140,10 +148,10 @@
                                 size="medium"></el-input-number>
                         </el-form-item>
                     </el-col>
-                   
+
                 </el-row>
-                <el-row> 
-                     <el-col :span="12">
+                <el-row>
+                    <el-col :span="12">
                         <el-form-item label="扣款原因">
                             <el-input v-model="userFormData.deductionDescription" placeholder="扣款原因"
                                 controls-position="right" style="width: 400px;"></el-input>
@@ -184,6 +192,7 @@ export default {
 
     data() {
         return {
+            file: {},
             text: '付',
             summary: '工资',
             salaryID: '',
@@ -249,12 +258,24 @@ export default {
         this.getList()
     },
     methods: {
+
+      submitUpload() {
+        this.$refs.upload.submit();
+      },
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
+    
+
         async updateApprovalStatus(row) {
             console.log(row)
             const res = await axios({
                 url: "http://localhost:8081/salary/updateStatus",
                 method: "get",
-                params:{
+                params: {
                     id: row.id
                 }
             })
@@ -268,6 +289,45 @@ export default {
                 // 跳转页面
                 this.$router.push('/voucher/Voucher?type=1');
             }, 1000);
+        },
+        // async submitUpload(){
+        //     console.log(this.file)
+        // },
+        async submitExport() {
+            try {
+                const res = await axios({
+                    url: "http://localhost:8081/salary/export",
+                    method: "get",
+                    responseType: 'blob', // 告诉axios我们期望接收一个blob
+                    params: {
+                        bookID: this.bookID,
+                        adminId: this.adminId,
+                        time1: this.value2[0],
+                        time2: this.value2[1],
+                        phone: this.phone
+                    }
+                });
+
+                // 创建一个blob链接
+                const url = window.URL.createObjectURL(new Blob([res.data]));
+
+                // 创建一个a标签
+                const link = document.createElement('a');
+                link.href = url;
+                // 如果你想指定文件名，可以设置download属性
+                link.setAttribute('download', 'salary_export.csv'); // 假设导出的是CSV文件
+
+                // 触发点击
+                document.body.appendChild(link); // 需要添加到DOM中才能触发点击
+                link.click();
+
+                // 然后移除a标签
+                document.body.removeChild(link);
+
+            } catch (error) {
+                console.error('导出失败:', error);
+                // 可以在这里处理错误，比如显示一个错误消息
+            }
         },
 
         async getList() {
@@ -300,13 +360,13 @@ export default {
             /* console.log(this.list) */
             this.total = res.data.count;
 
-           
+
         },
         // 点击搜索
         search() {
             this.getList()
         },
-       
+
         // 页码改变
         pagechange(pageno) {
             // 条件改变
@@ -403,12 +463,12 @@ export default {
                 method: 'post',
                 data: data
             })
-            if(res.data.code==0){
-            this.dialogFormVisible = false
-            this.getList()}
-            if(res.data.code==20020)
-            {
-            this.$message.error('该员工不存在');
+            if (res.data.code == 0) {
+                this.dialogFormVisible = false
+                this.getList()
+            }
+            if (res.data.code == 20020) {
+                this.$message.error('该员工不存在');
             }
         }
     },
