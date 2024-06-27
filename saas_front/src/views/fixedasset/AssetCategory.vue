@@ -20,7 +20,7 @@
                         </el-form-item>
                         <el-form-item label="折旧方法">
                             <el-select v-model="params.methodId" placeholder="请选择折旧方法" size="medium"
-                                @change="getMethod">
+                                >
                                 <el-option value=""></el-option>
                                 <el-option :label="method.depreciationName" :value="method.id" :key="method.id"
                                     v-for="method in methodList" />
@@ -90,7 +90,7 @@
                     <el-input type="text" v-model="formData.name" placeholder="资产类别名称"></el-input>
                 </el-form-item>
                 <el-form-item label="折旧方法">
-                    <el-select v-model="formData.methodId" placeholder="选择折旧方法" size="medium" @change="getMethodId">
+                    <el-select v-model="formData.methodId" placeholder="选择折旧方法" size="medium">
                         <el-option :label="method.depreciationName" :value="method.id" :key="method.id"
                             v-for="method in methodList" />
                     </el-select>
@@ -130,7 +130,8 @@
                     <el-input type="text" v-model="formData.name" placeholder="资产类别名称"></el-input>
                 </el-form-item>
                 <el-form-item label="折旧方法">
-                    <el-select v-model="formData.methodId" placeholder="选择折旧方法" size="medium" @change="getMethod">
+                    <el-select v-model="formData.methodId" placeholder="选择折旧方法" size="medium">
+                        <el-option value=""></el-option>
                         <el-option :label="method.depreciationName" :value="method.id" :key="method.id"
                             v-for="method in methodList" />
                     </el-select>
@@ -184,11 +185,11 @@ export default {
             multipleSelection: [],
             // 折旧方法 (查找)
             methodList: [],
-            selectedMethod: '',
             // 分页
             page: 1,
             limit: 5,
             total: 0,
+            // 默认关闭弹窗
             addshow: false,
             updateshow: false
         }
@@ -221,6 +222,7 @@ export default {
             this.methodList = res.data.data
             console.log(this.methodList)
         },
+
         // 点击搜索
         search() {
             this.DepreciationMethodgetList()
@@ -284,7 +286,8 @@ export default {
             this.updateshow = true;
             this.formData.number = row.number
             this.formData.name = row.name
-            this.formData.methodId = ''
+            this.formData.methodId =  row.methodId// 回填折旧方法的 id
+            // console.log(this.formData.methodId)
             this.formData.statue = row.statue
             this.formData.note = row.note
             this.id = row.id

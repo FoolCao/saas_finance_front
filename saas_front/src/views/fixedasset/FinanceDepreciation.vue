@@ -8,14 +8,29 @@
                 <div style="flex: 8;">
                     <el-form :inline="true">
                         <el-form-item label="折旧资产名称">
-                            <el-input v-model="params.assetName" placeholder="请输入折旧资产名称"></el-input>
+                            <el-input v-model="params.name" placeholder="请输入折旧资产名称"></el-input>
                         </el-form-item>
+
+                        <el-form-item label="折旧方法">
+                            <el-select v-model="params.methodId" placeholder="请选择折旧方法" size="medium">
+                                <el-option value=""></el-option>
+                                <el-option :label="method.depreciationName" :value="method.id" :key="method.id"
+                                    v-for="method in methodList" />
+                            </el-select>
+                        </el-form-item>
+
                         <el-form-item label="折旧资产类型">
-                            <el-input v-model="params.brandModel" placeholder="请输入折旧资产类型"></el-input>
+                            <el-select v-model="params.typeId" placeholder="请选择折旧资产类型" size="medium">
+                                <el-option value=""></el-option>
+                                <el-option :label="type.name" :value="type.id" :key="type.id"
+                                    v-for="type in typeList"></el-option>
+
+                            </el-select>
                         </el-form-item>
                         <el-form-item>
                             <el-button @click="search" type="primary" icon="el-icon-search">搜索</el-button>
                         </el-form-item>
+
                     </el-form>
                 </div>
             </div>
@@ -29,38 +44,37 @@
                     style="font-size: 16px;font-weight: bold;font-family: 'Times New Roman', Times, serif;">折旧明细表</span>
             </el-card>
 
-            <el-table :data="xxList" style="width: 100%">
-                <el-table-column type="expand">
-                    <template #default="{ row }">
-                        <div style="padding: 10px;">
-                            <el-table :data="row.depreciationDetailContent">
-                                <el-table-column label="日期" prop="netValue"></el-table-column>
-                                <el-table-column label="每月折旧" prop="depreciationAmount"></el-table-column>
-                            </el-table>
-                        </div>
-                    </template>
-                </el-table-column>
+            <div>
+                <el-table :data="tableData" style="width: 100%">
+                    <el-table-column prop="id" label="ID"></el-table-column>
+                    <el-table-column prop="name" label="名称"></el-table-column>
+                    <el-table-column prop="description" label="描述"></el-table-column>
+                    <el-table-column prop="depreciationType.name" label="折旧类型"></el-table-column>
+                    <el-table-column prop="originalValue" label="原值"></el-table-column>
+                    <el-table-column prop="depreciationAmount" label="折旧金额"></el-table-column>
+                    <el-table-column prop="statue" label="状态"></el-table-column>
+                    <el-table-column label="折旧明细" width="180">
+                        <template slot-scope="scope">
+                            <el-button type="text" @click="showDepreciationDetails(scope.row)">查看</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
 
-                <el-table-column prop="assetName" label="资产名称" align="center"> </el-table-column>
-                <el-table-column prop="brandModel" label="资产类型" align="center"> </el-table-column>
-                <el-table-column prop="description" label="品牌型号" align="center"> </el-table-column>
-                <el-table-column prop="originalValue" label="资产原值" align="center"> </el-table-column>
-                <el-table-column prop="netValue" label="折旧月份" align="center"> </el-table-column>
-                <el-table-column prop="depreciationAmount" label="每月折旧" align="center"> </el-table-column>
-                <el-table-column prop="ctime" label="申请日期" align="center"> </el-table-column>
-                <el-table-column prop="isRetired" label="状态" align="center">
-                    <template #default="{ row }">
-                        {{ row.isRetired === 0 ? '待审核' : (row.isRetired === 1 ? '已通过' : '未通过') }}
-                    </template>
-                </el-table-column>
-                <el-table-column fixed="right" label="操作">
-                    <template #default="{ row }">
-                        <el-button type="text" size="medium" icon="el-icon-document"
-                            @click="updateApprovalStatus(row)">生成凭证</el-button>
-                    </template>
-                </el-table-column>
-
-            </el-table>
+                <el-dialog title="折旧明细" :visible.sync="dialogVisible">
+                    <el-table :data="depreciationDetails" style="width: 100%">
+                        <el-table-column prop="id" label="ID"></el-table-column>
+                        <el-table-column prop="depreciationAmount" label="折旧金额"></el-table-column>
+                        <el-table-column prop="duringTime" label="折旧时间" width="180">
+                            <template slot-scope="scope">
+                                {{ new Date(scope.row.duringTime).toLocaleDateString() }}
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <span slot="footer" class="dialog-footer">
+                        <el-button @click="dialogVisible = false">关闭</el-button>
+                    </span>
+                </el-dialog>
+            </div>
 
             <!-- 分页组件 -->
             <el-pagination @current-change="pagechange" background layout="prev, pager, next" :total="total"
@@ -76,102 +90,40 @@
 
 import axios from "axios";
 import dayjs from "dayjs";
-import { Message } from 'element-ui'
+import { Table, TableColumn, Button, Dialog } from 'element-ui'
 export default {
 
+    components: { Table, TableColumn, Button, Dialog },
     data() {
         return {
-            xxList:[],
-            text:'付',
-            summary:'固定资产折旧',
-            list: [],
-            // 分页相关
-            pageno: 1,
-            pagesize: 5,
-            total: 0,
-            // 搜索条件
+            tableData: [],
+            depreciationDetails: [],
+            dialogVisible: false,
             params: {
-                assetName: '',
-                brandModel: ''
-            },
-            bookID: localStorage.getItem('bookID')
-        };
+                name: '',
+                methodId: '',
+                typeId: ''
+            }
+        }
     },
-    created() {
-        this.getList()
-        this.xxgetList()
+    mounted() {
+        this.fetchData()
     },
-
     methods: {
-
-        updateApprovalStatus(row) {
-            // this.getList()
-            localStorage.setItem('summary', this.summary)
-            localStorage.setItem('debitAmount', row.depreciationAmount)
-            localStorage.setItem('text',this.text)
-            // 等待两秒后跳转页面
-            Message.success('即将进入凭证界面')
-            setTimeout(() => {
-                // 跳转页面
-                this.$router.push('/voucher/Voucher?type=1');
-            }, 1000);
+        fetchData() {
+            axios.get('http://localhost:8081/depreciation/page')
+                .then(response => {
+                    this.tableData = response.data.data
+                })
+                .catch(error => {
+                    console.error(error)
+                })
         },
-
-        async xxgetList() {
-            const res = await axios({
-                method: "get",
-                url: "/xxdepreciationDetail",
-                params: {
-                    pageno: this.pageno,
-                    pagesize: this.pagesize,
-                    bookID: this.bookID,
-                    ...this.params
-                },
-            });
-            // 修改日期格式
-            this.xxList = res.data.data.list.map(item => {
-                return {
-                    ...item,
-                    ctime: dayjs(item.ctime).format('YYYY-MM-DD'),
-                };
-            });
-            this.total = res.data.data.total;
-        },
-        async getList() {
-            const res = await axios({
-                method: "get",
-                url: "/depreciationDetail",
-                params: {
-                    pageno: this.pageno,
-                    pagesize: this.pagesize,
-                    bookID: this.bookID,
-                    ...this.params
-                },
-            });
-            // 修改日期格式
-            this.list = res.data.data.list.map(item => {
-                return {
-                    ...item,
-                    ctime: dayjs(item.ctime).format('YYYY-MM-DD'),
-                };
-            });
-            this.total = res.data.data.total;
-        },
-        // 点击搜索
-        search() {
-            this.getList()
-        },
-        // 页码改变
-        pagechange(pageno) {
-            // 条件改变
-            this.pageno = pageno
-            // 重新请求数据
-            this.getList()
-        },
-
-
-    },
-
+        showDepreciationDetails(row) {
+            this.depreciationDetails = row.depreciationDetailContentDepreciationDetailContentList
+            this.dialogVisible = true
+        }
+    }
 }
 </script>
 
