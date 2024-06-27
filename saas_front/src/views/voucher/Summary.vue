@@ -2,7 +2,8 @@
     <div>
         <el-card>
             <el-card>
-                <span style="font-size: 18px;font-weight: bold;font-family: 'Times New Roman', Times, serif;">常用摘要</span>
+                <span
+                    style="font-size: 18px;font-weight: bold;font-family: 'Times New Roman', Times, serif;">常用摘要</span>
                 <el-popover placement="top-start" title="常用摘要功能介绍" width="600" trigger="hover">
                     <el-card>
                         <span>摘要通过简要的文字描述,迅速明确交易内容，记录与该笔交易相关的业务事项</span><br>
@@ -19,7 +20,8 @@
                     <el-row type="flex" justify="space-between" align="middle">
                         <!-- 左侧部分，包括新增按钮 -->
                         <el-col :span="6">
-                            <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addopen">新增摘要</el-button>
+                            <el-button type="primary" icon="el-icon-circle-plus-outline"
+                                @click="addopen">新增摘要</el-button>
                         </el-col>
 
                         <!-- 右侧部分，包括查询输入框 -->
@@ -32,7 +34,8 @@
                         </el-col>
                     </el-row>
                 </div>
-                <el-table :data="list" style="width: 100%;margin-top: 15px;" :header-row-class-name="tableHeaderClassName">
+                <el-table :data="list" style="width: 100%;margin-top: 15px;"
+                    :header-row-class-name="tableHeaderClassName">
                     <el-table-column prop="summaryId" label="序号" align="center" width="100"> </el-table-column>
                     <el-table-column prop="summaryContent" label="摘要内容" align="center"></el-table-column>
                     <el-table-column fixed="right" label="操作" align="center" width="200px">
@@ -55,7 +58,8 @@
                 <el-form :model="userFormData" class="demo-form-inline" label-width="80px">
 
                     <el-form-item label="摘要">
-                        <el-input type="textarea" v-model="userFormData.summaryContent" placeholder="摘要" :autosize="{ minRows: 4, maxRows: 6 }"></el-input>
+                        <el-input type="textarea" v-model="userFormData.summaryContent" placeholder="摘要"
+                            :autosize="{ minRows: 4, maxRows: 6 }"></el-input>
                     </el-form-item>
 
                     <!-- 使用 Flex 布局排列按钮 -->
@@ -71,7 +75,8 @@
                 <el-form :model="userFormData" class="demo-form-inline" label-width="80px">
 
                     <el-form-item label="摘要">
-                        <el-input type="textarea" v-model="userFormData.summaryContent" placeholder="摘要" :autosize="{ minRows: 4, maxRows: 6 }"></el-input>
+                        <el-input type="textarea" v-model="userFormData.summaryContent" placeholder="摘要"
+                            :autosize="{ minRows: 4, maxRows: 6 }"></el-input>
                     </el-form-item>
 
                     <!-- 使用 Flex 布局排列按钮 -->
@@ -153,7 +158,7 @@ export default {
                 const data = {
                     id: row.summaryId,
                 }
-              try {
+
                 const res = await axios({
                     url: "http://localhost:8081/summary/delete",
                     method: "delete",
@@ -161,9 +166,7 @@ export default {
                 })
                 this.getList()
             }
-            finally{}
-        }},
-
+        },
         async submit() {
             const data = {
                 summaryId: this.summaryId,
@@ -220,9 +223,11 @@ export default {
 }
 
 .button-group {
-  display: flex;
-  justify-content: space-between; /* 将按钮平均分布在弹窗底部 */
-  margin-top: 20px; /* 为按钮组设置上边距，以调整按钮与输入框的间隔 */
-  margin-right: 80px;
+    display: flex;
+    justify-content: space-between;
+    /* 将按钮平均分布在弹窗底部 */
+    margin-top: 20px;
+    /* 为按钮组设置上边距，以调整按钮与输入框的间隔 */
+    margin-right: 80px;
 }
 </style>

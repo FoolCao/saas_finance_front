@@ -6,16 +6,24 @@
                 <div style="flex: 8;">
                     <el-form :inline="true">
                         <el-form-item>
-                            <el-input v-model="params.name" placeholder="请输入折旧名称"></el-input>
+                            <el-input v-model="params.name" placeholder="请输入资产类别名称"></el-input>
                         </el-form-item>
                         <el-form-item>
-                            <el-input v-model="params.number" placeholder="请输入折旧编码"></el-input>
+                            <el-input v-model="params.number" placeholder="请输入资产类别编码"></el-input>
                         </el-form-item>
                         <el-form-item>
                             <el-select v-model="params.statue" placeholder="请选择状态">
                                 <el-option value=""></el-option>
                                 <el-option label="启用" value="启用"></el-option>
                                 <el-option label="禁用" value="禁用"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="折旧方法">
+                            <el-select v-model="params.methodId" placeholder="请选择折旧方法" size="medium"
+                                @change="getMethod">
+                                <el-option value=""></el-option>
+                                <el-option :label="method.depreciationName" :value="method.id" :key="method.id"
+                                    v-for="method in methodList" />
                             </el-select>
                         </el-form-item>
                         <el-form-item>
@@ -30,7 +38,7 @@
 
             <el-card>
                 <span
-                    style="font-size: 16px;font-weight: bold;font-family: 'Times New Roman', Times, serif;">折旧方法</span>
+                    style="font-size: 16px;font-weight: bold;font-family: 'Times New Roman', Times, serif;">资产类别</span>
                 <div style="border: 2px; margin-top: 20px;">
                     <el-button type="primary" @click="addopen">新增</el-button>
                     <el-button type="info" plain @click="batchdelete">批量删除</el-button>
@@ -39,17 +47,19 @@
                 </div>
             </el-card>
 
-            <el-table :data="DepreciationMethodList" style="width: 100%" @selection-change="handleSelectionChange">
+            <el-table :data="AssetCategoryMethodList" style="width: 100%" @selection-change="handleSelectionChange">
 
                 <el-table-column type="selection" width="55">
                 </el-table-column>
                 <el-table-column prop="id" label="序号" align="center"> </el-table-column>
-                <el-table-column prop="number" label="折旧方法编码" align="center"> </el-table-column>
-                <el-table-column prop="depreciationName" label="折旧名称" align="center"> </el-table-column>
-                <el-table-column prop="year" label="折旧年限" align="center"> </el-table-column>
-                <el-table-column prop="term" label="折旧期限" align="center"> </el-table-column>
-                <el-table-column prop="yearRate" label="年折旧率" align="center"> </el-table-column>
-                <el-table-column prop="monthRate" label="每期折旧率" align="center"> </el-table-column>
+                <el-table-column prop="number" label="资产类别编码" align="center"> </el-table-column>
+                <el-table-column prop="name" label="资产类别名称" align="center"> </el-table-column>
+                <el-table-column prop="depreciationMethod.depreciationName" label="折旧方法" align="center">
+                </el-table-column>
+                <el-table-column prop="depreciationMethod.year" label="预计使用年限" align="center"> </el-table-column>
+                <el-table-column prop="depreciationMethod.term" label="使用月份" align="center"> </el-table-column>
+                <el-table-column prop="depreciationMethod.yearRate" label="年折旧率" align="center"> </el-table-column>
+                <el-table-column prop="depreciationMethod.monthRate" label="每期折旧率" align="center"></el-table-column>
                 <el-table-column prop="statue" label="状态" align="center"></el-table-column>
                 <el-table-column prop="note" label="备注" align="center"></el-table-column>
                 <el-table-column fixed="right" label="操作" width="150" align="center">
@@ -66,40 +76,24 @@
         </el-card>
 
         <!-- 新增弹窗区域 -->
-        <el-dialog title="新增折旧方法" :visible.sync="addshow" width="600px">
+        <el-dialog title="新增资产类别" :visible.sync="addshow" width="600px">
             <el-form :model="formData" class="demo-form-inline" label-width="80px">
 
-                <el-form-item label="折旧方法编码" label-width="120px" :rules="[
-                        { required: true, message: '请输入折旧方法编码', trigger: 'blur' }
+                <el-form-item label="资产类别编码" label-width="120px" :rules="[
+                        { required: true, message: '请输入资产类别编码', trigger: 'blur' }
                     ]">
-                    <el-input type="text" v-model="formData.number" placeholder="折旧方法编码"></el-input>
+                    <el-input type="text" v-model="formData.number" placeholder="资产类别编码"></el-input>
                 </el-form-item>
-                <el-form-item label="折旧名称" label-width="120px" :rules="[
-                        { required: true, message: '请输入折旧名称', trigger: 'blur' }
+                <el-form-item label="资产类别名称" label-width="120px" :rules="[
+                        { required: true, message: '请输入资产类别名称', trigger: 'blur' }
                     ]">
-                    <el-input type="text" v-model="formData.depreciationName" placeholder="折旧名称"></el-input>
+                    <el-input type="text" v-model="formData.name" placeholder="资产类别名称"></el-input>
                 </el-form-item>
-                <el-form-item label="折旧年限" label-width="100px">
-                    <template>
-                        <el-input-number v-model="formData.year" :step="2" step-strictly></el-input-number>
-                    </template>
-                </el-form-item>
-                <el-form-item label="折旧期限" label-width="100px">
-                    <template>
-                        <el-input-number v-model="formData.term" :step="2" step-strictly></el-input-number>
-                    </template>
-                </el-form-item>
-                <el-form-item label="年折旧率" label-width="100px">
-                    <template>
-                        <el-input-number v-model="formData.yearRate" :precision="2" :step="0.1"
-                            :max="10"></el-input-number>
-                    </template>
-                </el-form-item>
-                <el-form-item label="每期折旧率" label-width="100px">
-                    <template>
-                        <el-input-number v-model="formData.monthRate" :precision="2" :step="0.1"
-                            :max="10"></el-input-number>
-                    </template>
+                <el-form-item label="折旧方法">
+                    <el-select v-model="formData.methodId" placeholder="选择折旧方法" size="medium" @change="getMethodId">
+                        <el-option :label="method.depreciationName" :value="method.id" :key="method.id"
+                            v-for="method in methodList" />
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="状态" label-width="100px">
                     <el-radio-group v-model="formData.statue">
@@ -125,37 +119,21 @@
         <el-dialog title="修改折旧方法" :visible.sync="updateshow" width="600px">
             <el-form :model="formData" class="demo-form-inline" label-width="80px">
 
-                <el-form-item label="折旧方法编码" label-width="120px" :rules="[
-                        { required: true, message: '请输入折旧方法编码', trigger: 'blur' }
+                <el-form-item label="资产类别编码" label-width="120px" :rules="[
+                        { required: true, message: '请输入资产类别编码', trigger: 'blur' }
                     ]">
-                    <el-input type="text" v-model="formData.number" placeholder="折旧方法编码"></el-input>
+                    <el-input type="text" v-model="formData.number" placeholder="资产类别编码"></el-input>
                 </el-form-item>
-                <el-form-item label="折旧名称" label-width="120px" :rules="[
-                        { required: true, message: '请输入折旧名称', trigger: 'blur' }
+                <el-form-item label="资产类别名称" label-width="120px" :rules="[
+                        { required: true, message: '请输入资产类别名称', trigger: 'blur' }
                     ]">
-                    <el-input type="text" v-model="formData.depreciationName" placeholder="折旧名称"></el-input>
+                    <el-input type="text" v-model="formData.name" placeholder="资产类别名称"></el-input>
                 </el-form-item>
-                <el-form-item label="折旧年限" label-width="100px">
-                    <template>
-                        <el-input-number v-model="formData.year" :step="2" step-strictly></el-input-number>
-                    </template>
-                </el-form-item>
-                <el-form-item label="折旧期限" label-width="100px">
-                    <template>
-                        <el-input-number v-model="formData.term" :step="2" step-strictly></el-input-number>
-                    </template>
-                </el-form-item>
-                <el-form-item label="年折旧率" label-width="100px">
-                    <template>
-                        <el-input-number v-model="formData.yearRate" :precision="2" :step="0.1"
-                            :max="10"></el-input-number>
-                    </template>
-                </el-form-item>
-                <el-form-item label="每期折旧率" label-width="100px">
-                    <template>
-                        <el-input-number v-model="formData.monthRate" :precision="2" :step="0.1"
-                            :max="10"></el-input-number>
-                    </template>
+                <el-form-item label="折旧方法">
+                    <el-select v-model="formData.methodId" placeholder="选择折旧方法" size="medium" @change="getMethod">
+                        <el-option :label="method.depreciationName" :value="method.id" :key="method.id"
+                            v-for="method in methodList" />
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="状态" label-width="100px">
                     <el-radio-group v-model="formData.statue">
@@ -189,21 +167,25 @@ export default {
             id: 0,
             formData: {
                 number: '',
-                depreciationName: '',
-                year: '',
-                term: '',
-                yearRate: '',
-                monthRate: '',
+                name: '',
+                methodId: '',
                 statue: '',
                 note: ''
             },
             params: {
                 name: '',
                 number: '',
-                statue: ''
+                statue: '',
+                // 折旧方法 (搜索)
+                methodId: ''
             },
-            DepreciationMethodList: [],
+            AssetCategoryMethodList: [],
+            depreciationName: '',
             multipleSelection: [],
+            // 折旧方法 (查找)
+            methodList: [],
+            selectedMethod: '',
+            // 分页
             page: 1,
             limit: 5,
             total: 0,
@@ -213,20 +195,31 @@ export default {
     },
     created() {
         this.DepreciationMethodgetList()
+        this.getMethod()
     },
     methods: {
         async DepreciationMethodgetList() {
             const res = await axios({
                 method: "get",
-                url: "http://localhost:8081/depreciationMethod/page",
+                url: "http://localhost:8081/depreciationType/page",
                 params: {
                     page: this.page,
                     limit: this.limit,
                     ...this.params
                 },
             });
-            this.DepreciationMethodList = res.data.data
+            this.AssetCategoryMethodList = res.data.data
             this.total = res.data.count
+            console.log(res.data.data)
+
+        },
+        async getMethod() {
+            const res = await axios({
+                method: "get",
+                url: "http://localhost:8081/depreciationMethod/findAll",
+            });
+            this.methodList = res.data.data
+            console.log(this.methodList)
         },
         // 点击搜索
         search() {
@@ -248,7 +241,7 @@ export default {
                 ...this.formData
             }
             const res = await axios({
-                url: "http://localhost:8081/depreciationMethod/add",
+                url: "http://localhost:8081/depreciationType/add",
                 method: "post",
                 data: data
             })
@@ -268,7 +261,7 @@ export default {
                     type: 'warning'
                 }).then(() => {
                     axios({
-                        url: "http://localhost:8081/depreciationMethod/delete/?id=" + row.id,
+                        url: "http://localhost:8081/depreciationType/delete/?id=" + row.id,
                         method: "delete",
 
                     })
@@ -290,11 +283,8 @@ export default {
         edit(row) {
             this.updateshow = true;
             this.formData.number = row.number
-            this.formData.depreciationName = row.depreciationName
-            this.formData.year = row.year
-            this.formData.term = row.term
-            this.formData.yearRate = row.yearRate
-            this.formData.monthRate = row.monthRate
+            this.formData.name = row.name
+            this.formData.methodId = ''
             this.formData.statue = row.statue
             this.formData.note = row.note
             this.id = row.id
@@ -305,7 +295,7 @@ export default {
                 ...this.formData
             }
             const res = await axios({
-                url: "http://localhost:8081/depreciationMethod/update",
+                url: "http://localhost:8081/depreciationType/update",
                 method: "put",
                 data: data
             })
@@ -332,7 +322,7 @@ export default {
                 type: 'warning'
             }).then(() => {
                 axios({
-                    url: "http://localhost:8081/depreciationMethod/delete/batch",
+                    url: "http://localhost:8081/depreciationType/delete/batch",
                     method: "delete",
                     data: data,
                 })
