@@ -207,6 +207,11 @@ export const menuRoutes = [
         path: '/fixedasset/DepreciationMethod',
         meta: { title: '折旧方法' },
         component: () => import('@/views/fixedasset/DepreciationMethod.vue'),
+      },
+      {
+        path: '/fixedasset/AssetCategory.vue',
+        meta: { title: '资产类型' },
+        component: () => import('@/views/fixedasset/AssetCategory.vue'),
       }
     ]
   },
