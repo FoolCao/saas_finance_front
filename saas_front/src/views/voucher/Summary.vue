@@ -63,9 +63,6 @@
                         <el-button @click="submit" type="primary">提交</el-button>
                         <el-button @click="cancel" type="info">取消</el-button>
                     </el-form-item>
-
-
-
                 </el-form>
             </el-dialog>
 
@@ -158,7 +155,7 @@ export default {
                 }
                 const res = await axios({
                     url: "http://localhost:8081/summary/delete",
-                    method: "post",
+                    method: "delete",
                     data: data
                 })
                 this.getList()

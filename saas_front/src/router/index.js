@@ -182,46 +182,51 @@ export const menuRoutes = [
     ]
   },
 
-  // /* 固定资产折旧管理 */
-  // //财务固定资产管理
-  // {
-  //   path: '/FinanceDepreciation',
-  //   component: () => import('@/layout/Layout.vue'),
-  //   meta: { title: '固定资产折旧管理', menu: true, icon: 'el-icon-office-building', role: ['财务', '管理员'] },
-  //   children: [
-  //     {
-  //       path: '',
-  //       meta: { title: '固定资产折旧明细' },
-  //       component: () => import('@/views/fixedasset/FinanceDepreciation.vue'),
-  //     }
-  //   ]
-  // },
-  // //用户固定折旧申请
-  // {
-  //   path: '/personalDepreciation',
-  //   component: () => import('@/layout/Layout.vue'),
-  //   meta: { title: '资产折旧申请', menu: true, icon: 'el-icon-office-building', role: ['员工'] },
-  //   children: [
-  //     {
-  //       path: '',
-  //       meta: { title: '申请固定资产折旧' },
-  //       component: () => import('@/views/fixedasset/PersonalDepreciation.vue'),
-  //     }
-  //   ]
-  // },
-  // //老板端固定资产折旧审批
-  // {
-  //   path: '/BossFixedasset',
-  //   component: () => import('@/layout/Layout.vue'),
-  //   meta: { title: '固定资产折旧审核', menu: true, icon: 'el-icon-office-building', role: ['管理员'] },
-  //   children: [
-  //     {
-  //       path: '',
-  //       meta: { title: '审核资产折旧申请' },
-  //       component: () => import('@/views/fixedasset/BossDepreciation.vue'),
-  //     }
-  //   ]
-  // },
+  /* 固定资产折旧管理 */
+  //财务固定资产管理
+  {
+    path: '/fixedasset',
+    component: () => import('@/layout/Layout.vue'),
+    meta: { title: '固定资产折旧管理', menu: true, icon: 'el-icon-office-building'},
+    children: [
+      {
+        path: '/fixedasset/FinanceDepreciation',
+        meta: { title: '固定资产折旧明细' },
+        component: () => import('@/views/fixedasset/FinanceDepreciation.vue'),
+      },
+      {
+        path: '/fixedasset/DepreciationMethod',
+        meta: { title: '折旧方法' },
+        component: () => import('@/views/fixedasset/DepreciationMethod.vue'),
+      }
+    ]
+  },
+  //用户固定折旧申请
+  {
+    path: '/personalDepreciation',
+    component: () => import('@/layout/Layout.vue'),
+    meta: { title: '资产折旧申请', menu: true, icon: 'el-icon-office-building', role: ['员工'] },
+    children: [
+      {
+        path: '',
+        meta: { title: '申请固定资产折旧' },
+        component: () => import('@/views/fixedasset/PersonalDepreciation.vue'),
+      }
+    ]
+  },
+  //老板端固定资产折旧审批
+  {
+    path: '/BossFixedasset',
+    component: () => import('@/layout/Layout.vue'),
+    meta: { title: '固定资产折旧审核', menu: true, icon: 'el-icon-office-building', role: ['管理员'] },
+    children: [
+      {
+        path: '',
+        meta: { title: '审核资产折旧申请' },
+        component: () => import('@/views/fixedasset/BossDepreciation.vue'),
+      }
+    ]
+  },
 
   // //期末结转
   // {

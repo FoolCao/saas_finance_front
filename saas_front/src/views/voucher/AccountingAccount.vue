@@ -154,7 +154,7 @@ export default {
                     id: row.id,
                 }
                 const res = await axios({
-                    url: "http://localhost:8081/accountingAccount/delete",
+                    url: "http://localhost:8081/accounting/delete",
                     method: "post",
                     data: data
                 })
@@ -168,7 +168,7 @@ export default {
                 ...this.userFormData
             }
             const res = await axios({
-                url: "http://localhost:8081/accountingAccount/update",
+                url: "http://localhost:8081/accounting/update",
                 method: "post",
                 data: data
             })
@@ -184,7 +184,7 @@ export default {
                 ...this.userFormData
             }
             const res = await axios({
-                url: "http://localhost:8081/accountingAccount/add",
+                url: "http://localhost:8081/accounting/add",
                 method: "post",
                 data: data
             })
