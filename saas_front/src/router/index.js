@@ -113,23 +113,32 @@ export const menuRoutes = [
   /* 工资管理 */
   //财务端工资管理
   {
-    path: '/Salary',
+    path: '/salary',
     component: () => import('@/layout/Layout.vue'),//页面布局已设置不要更改
     meta: { title: '工资管理', menu: true, icon: 'el-icon-bank-card'},
     children: [
       {
-        path: '',
+        path: '/salary/Salary',
         meta: { title: '工资表', menu: true },
         component: () => import('@/views/salary/Salary.vue'),
       },
-
+      {
+        path: '/salary/Salary',
+        meta: { title: '社保公积金', menu: true },
+        component: () => import('@/views/salary/Salary.vue'),
+      },
+      {
+        path: '/BenefitsAndProvidentFund',
+        meta: { title: '社保公积金设置', menu: true },
+        component: () => import('@/views/salary/BenefitsAndProvidentFund.vue'),
+      }
     ]
   },
   //员工工资管理
   {
     path: '/PersonalSalary',
     component: () => import('@/layout/Layout.vue'),
-    meta: { title: '工资管理', menu: true, icon: 'el-icon-bank-card'},
+    meta: { title: '员工工资', menu: true, icon: 'el-icon-bank-card'},
     children: [
       {
         path: '',

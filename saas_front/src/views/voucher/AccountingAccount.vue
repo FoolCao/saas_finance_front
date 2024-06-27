@@ -24,7 +24,7 @@
 
                         <!-- 右侧部分，包括查询输入框 -->
                         <el-col :span="9" :offset="14">
-                            <el-input placeholder="请输入查询内容" prefix-icon="el-icon-search"
+                            <el-input placeholder="请输入查询科目名称" prefix-icon="el-icon-search"
                                 v-model="params.accountingAccount"></el-input>
                         </el-col>
                         <el-col :span="3" :offset="0.5">
@@ -54,7 +54,7 @@
                 <el-form :model="userFormData" class="demo-form-inline" label-width="80px">
 
                     <el-form-item label="会计科目">
-                        <el-input type="textarea" v-model="userFormData.AccountingAccount" placeholder="会计科目" :autosize="{ minRows: 4, maxRows: 6 }"></el-input>
+                        <el-input type="textarea" v-model="userFormData.accountingAccount" placeholder="会计科目" :autosize="{ minRows: 4, maxRows: 6 }"></el-input>
                     </el-form-item>
 
                     <!-- 使用 Flex 布局排列按钮 -->
@@ -71,7 +71,7 @@
                 <el-form :model="userFormData" class="demo-form-inline" label-width="80px">
 
                     <el-form-item label="会计科目">
-                        <el-input type="textarea" v-model="userFormData.AccountingAccount" placeholder="会计科目" :autosize="{ minRows: 4, maxRows: 6 }"></el-input>
+                        <el-input type="textarea" v-model="userFormData.accountingAccount" placeholder="会计科目" :autosize="{ minRows: 4, maxRows: 6 }"></el-input>
                     </el-form-item>
 
                     <!-- 使用 Flex 布局排列按钮 -->
@@ -98,7 +98,7 @@ export default {
             list: [],
             id: '',
             userFormData: {
-                AccountingAccount: ''
+                accountingAccount: ''
             },
             pageno: 1,
             pagesize: 4,
@@ -126,6 +126,7 @@ export default {
             });
             this.list = res.data.data;
             this.total = res.data.count;
+            console.log(this.total)
         },
         // 点击搜索
         search() {
@@ -141,27 +142,36 @@ export default {
         update(row) {
             console.log(row)
             this.show = true;
-            this.userFormData.AccountingAccount = row.accountingAccount;
+            this.userFormData.accountingAccount = row.accountingAccount;
             this.id = row.id
         },
-        async out(row) {
+      async out(row) {
+        if (row.isDefault === '是') {
+          // 如果 isDefault 为 "是"，不执行删除操作
+          this.$message.warning('不能删除默认项');
+        } else {
+          const data = {
+            id: row.id,
+          };
+          try {
+            const res = await axios.delete("http://localhost:8081/accounting/delete", {
+              params: data
+            });
 
-            if (row.isDefault === '是') {
-                // 如果 isDefault 为 "是"，不执行删除操作
-                this.$message.warning('不能删除默认项');
-            } else {
-                const data = {
-                    id: row.id,
-                }
-                const res = await axios({
-                    url: "http://localhost:8081/accounting/delete",
-                    method: "post",
-                    data: data
-                })
-                this.getList()
+            // 判断当前页是否是最后一页且只有一条数据
+            if (this.$data.pageno === Math.ceil(this.total / this.pagesize) && this.total % this.pagesize === 1) {
+              // 如果是最后一页且只有一条数据，页码减一
+              this.$data.pageno--;
             }
 
-        },
+            // 查询数据
+            await this.getList();
+          } catch (error) {
+            console.error('Error deleting:', error);
+            // 处理错误
+          }
+        }
+      },
         async submit() {
             const data = {
                 id: this.id,
@@ -185,6 +195,7 @@ export default {
             }
             const res = await axios({
                 url: "http://localhost:8081/accounting/add",
+                url: "http://localhost:8081/accounting/add",
                 method: "post",
                 data: data
             })
@@ -193,7 +204,7 @@ export default {
         },
         addopen() {
             this.addshow = true
-            this.userFormData.AccountingAccount = ''
+            this.userFormData.accountingAccount = ''
         }
     }
 

@@ -33,7 +33,7 @@
                     </el-row>
                 </div>
                 <el-table :data="list" style="width: 100%;margin-top: 15px;" :header-row-class-name="tableHeaderClassName">
-                    <el-table-column prop="summaryID" label="序号" align="center" width="100"> </el-table-column>
+                    <el-table-column prop="summaryId" label="序号" align="center" width="100"> </el-table-column>
                     <el-table-column prop="summaryContent" label="摘要内容" align="center"></el-table-column>
                     <el-table-column fixed="right" label="操作" align="center" width="200px">
                         <template #default="{ row }">
@@ -96,7 +96,7 @@ export default {
         return {
             tableHeaderClassName: 'custom-table-header',// 自定义的表头样式类名
             list: [],
-            summaryID: '',
+            summaryId: '',
             userFormData: {
                 summaryContent: ''
             },
@@ -142,7 +142,7 @@ export default {
             console.log(row)
             this.show = true;
             this.userFormData.summaryContent = row.summaryContent;
-            this.summaryID = row.summaryID
+            this.summaryId = row.summaryId
         },
         async out(row) {
 
@@ -151,8 +151,9 @@ export default {
                 this.$message.warning('不能删除默认项');
             } else {
                 const data = {
-                    summaryID: row.summaryID,
+                    id: row.summaryId,
                 }
+              try {
                 const res = await axios({
                     url: "http://localhost:8081/summary/delete",
                     method: "delete",
@@ -165,12 +166,12 @@ export default {
 
         async submit() {
             const data = {
-                summaryID: this.summaryID,
+                summaryId: this.summaryId,
                 ...this.userFormData
             }
             const res = await axios({
                 url: "http://localhost:8081/summary/update",
-                method: "post",
+                method: "put",
                 data: data
             })
             this.getList()

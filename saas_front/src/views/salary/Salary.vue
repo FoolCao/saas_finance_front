@@ -8,14 +8,11 @@
                     <!-- 搜索区域 -->
                     <el-col :span="23">
                         <el-form :inline="true" style="margin-top: 20px;">
-                            <el-form-item label="根据月份查询">
-                                <el-date-picker v-model="params.assetName" type="date" placeholder="开始日期">
+                            <div class="block">
+                                <el-date-picker v-model="value2" type="datetimerange" :picker-options="pickerOptions"
+                                    range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right">
                                 </el-date-picker>
-                            </el-form-item>
-                            <el-form-item>
-                                <el-date-picker v-model="params.brandModel" type="date" placeholder="截止日期">
-                                </el-date-picker>
-                            </el-form-item>
+                            </div>
                             <el-form-item>
                                 <el-button @click="search()" type="primary" icon="el-icon-search">搜索</el-button>
                             </el-form-item>
@@ -34,7 +31,7 @@
                     </el-col>
                 </el-row>
             </div>
-            
+
         </el-card>
 
         <!-- 员工工资表 -->
@@ -45,16 +42,21 @@
             </el-card>
 
             <el-table :data="list" border style="width: 100%">
-                <el-table-column prop="employee.employeeDes" label="姓名" width="70" align="center"
+                <el-table-column prop="id" label="编号" align="center"> </el-table-column>
+                <el-table-column prop="name" label="姓名" width="70" align="center"
                     fixed="left"></el-table-column>
-                <el-table-column prop="baseSalary" label="基本工资" align="center"> </el-table-column>
+                <el-table-column prop="phone" label="电话" align="center"> </el-table-column>
+                <el-table-column prop="basicSalary" label="基本工资" align="center"> </el-table-column>
                 <el-table-column prop="allowance" label="津贴" align="center"> </el-table-column>
                 <el-table-column prop="bonus" label="奖金" align="center"> </el-table-column>
-                <el-table-column prop="subsidy" label="补助" align="center"> </el-table-column>
+                <el-table-column prop="gx" label="工资小计" align="center"> </el-table-column>
                 <el-table-column prop="deduction" label="扣款" align="center"> </el-table-column>
-                <el-table-column prop="personalIncomeTax" label="个税" align="center"> </el-table-column>
-                <el-table-column prop="insurance" label="保险金额" align="center"> </el-table-column>
-                <el-table-column prop="actualSalary" label="实发工资" align="center">
+                <el-table-column prop="deductionDescription" label="扣款原因" align="center"> </el-table-column>
+                <el-table-column prop="yg" label="应发工资" align="center"> </el-table-column>
+                <el-table-column prop="individualIncomeTax" label="个人免税额" align="center"> </el-table-column>
+                <el-table-column prop="gs" label="个人所得税" align="center"> </el-table-column>
+                <el-table-column prop="sp" label="社保公积金" align="center"> </el-table-column>
+                <el-table-column prop="zg" label="实发工资" align="center">
                 </el-table-column>
                 <el-table-column prop="payoutDate" label="发放日期" align="center">
                     <template #default="{ row }">
@@ -174,9 +176,9 @@ export default {
 
     data() {
         return {
-            text:'付',
-            summary:'工资',
-            salaryID:'',
+            text: '付',
+            summary: '工资',
+            salaryID: '',
             list: [],
             // 分页相关
             pageno: 1,
@@ -205,7 +207,37 @@ export default {
             salaryID: '',
             dialogFormVisible: false,
             employeeList: [],
-            selectedEmployee: ''
+            selectedEmployee: '',
+
+            pickerOptions: {
+          shortcuts: [{
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }, {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit('pick', [start, end]);
+            }
+          }]
+        },
+        value1: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
+        value2: ''
         };
     },
     created() {
@@ -229,7 +261,7 @@ export default {
             // this.getList()
             localStorage.setItem('summary', this.summary)
             localStorage.setItem('debitAmount', row.actualSalary)
-            localStorage.setItem('text',this.text)
+            localStorage.setItem('text', this.text)
             // 等待两秒后跳转页面
             Message.success('即将进入凭证界面')
             setTimeout(() => {
@@ -246,7 +278,7 @@ export default {
             };
             const res = await axios({
                 method: "get",
-                url: "http://localhost:8080/salary/findAllAndEmployee",
+                url: "http://localhost:8081/salary/list",
                 params: {
                     pageno: this.pageno,
                     pagesize: this.pagesize,
@@ -376,12 +408,12 @@ export default {
         async submit() {
             const data = {
                 ...this.userFormData,
-                isToVoucher:'否',
-                bookID:this.bookID,
-                payoutDate:new Date(),
-                createDate:new Date(),
+                isToVoucher: '否',
+                bookID: this.bookID,
+                payoutDate: new Date(),
+                createDate: new Date(),
             }
-            data.employeeID = this.selectedEmployee ;
+            data.employeeID = this.selectedEmployee;
             if (this.actionType === 'edit') {
                 data.salaryID = this.salaryID
             }
