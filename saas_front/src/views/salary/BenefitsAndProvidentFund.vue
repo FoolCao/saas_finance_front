@@ -52,7 +52,7 @@
                   </template>
                 </el-table-column>
                 <el-table-column prop="description" label="备注"> </el-table-column>
-                <el-table-column prop="tenantId" label="租户id"> </el-table-column>
+                <!-- <el-table-column prop="tenantId" label="租户id"> </el-table-column> -->
                 <el-table-column fixed="right" label="操作" align="center" width="200px">
                   <template #default="{ row }">
                     <el-button type="primary" icon="el-icon-edit" circle @click="update(row)"></el-button>
@@ -94,9 +94,9 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="租户id">
+          <!-- <el-form-item label="租户id">
             <el-input v-model="userFormData.tenantId" placeholder="租户id"></el-input>
-          </el-form-item>
+          </el-form-item> -->
 
           <!-- 使用 Flex 布局排列按钮 -->
           <el-form-item class="button-group">
@@ -127,9 +127,9 @@
             <el-input v-model="userFormData.description" placeholder="备注信息"></el-input>
           </el-form-item>
 
-          <el-form-item label="租户id">
+          <!-- <el-form-item label="租户id">
             <el-input v-model="userFormData.tenantId" placeholder="租户id"></el-input>
-          </el-form-item>
+          </el-form-item> -->
 
           <!-- 使用 Flex 布局排列按钮 -->
           <el-form-item class="button-group">

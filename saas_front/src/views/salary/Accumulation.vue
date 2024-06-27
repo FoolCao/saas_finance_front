@@ -176,11 +176,11 @@
                     <span style="font-size: 16px;font-weight: bold;">详情</span>
                 </el-card> -->
 
-                <el-table :data="list" border style="width: 100%">
+                <el-table :data="accumulation" border style="width: 100%">
                     <!-- <el-table-column prop="id" label="编号" align="center"> </el-table-column> -->
-                    <el-table-column prop="phone" label="电话" align="center"> </el-table-column>
-                    <el-table-column prop="sc" label="公司社保公积金" align="center"> </el-table-column>
-                    <el-table-column prop="sp" label="个人社保公积金" align="center"> </el-table-column>
+                    <el-table-column prop="paymentProject" label="社保" align="center"> </el-table-column>
+                    <el-table-column prop="companyMoney" label="公司承担金额" align="center"> </el-table-column>
+                    <el-table-column prop="personalMoney" label="个人承担金额" align="center"> </el-table-column>
                 </el-table>
 
 
@@ -206,6 +206,7 @@ export default {
             summary: '工资',
             salaryID: '',
             list: [],
+            accumulation: [],
             // 分页相关
             pageno: 1,
             pagesize: 5,
@@ -356,27 +357,31 @@ export default {
             this.employeeID = this.selectedEmployee;
             this.selectedEmployee = ''
         },
+
+        async getAccumulationList(row) {
+            // const formattedParams = {
+            //     ...this.params,
+            //     assetName: this.params.assetName ? dayjs(this.params.assetName).format('YYYY-MM-DD HH:mm:ss') : null,
+            //     brandModel: this.params.brandModel ? dayjs(this.params.brandModel).format('YYYY-MM-DD HH:mm:ss') : null,
+            // };
+            const res = await axios({
+                method: "get",
+                url: "http://localhost:8081/accumulate/detail",
+                params: {
+                   id: row.id
+                },
+            });
+           this.accumulation=res.data.data;
+        },
+
         //修改弹窗
         update(row) {
+            console.log(row)
+            this.getAccumulationList(row)
+            
+            setTimeout(console.log("延迟1s"),1000);
             // 打开弹窗
             this.detailFormVisible = true
-            // 数据回显
-            this.userFormData.baseSalary = row.baseSalary
-            this.userFormData.allowance = row.allowance
-            this.userFormData.bonus = row.bonus
-            this.userFormData.subsidy = row.subsidy
-            this.userFormData.deduction = row.deduction
-            this.userFormData.personalIncomeTax = row.personalIncomeTax
-            this.userFormData.actualSalary = row.actualSalary
-            this.userFormData.insurance = row.insurance
-            this.selectedEmployee = row.employee.employeeID
-            // 记录id
-            this.salaryID = row.salaryID
-            this.employeeID = this.selectedEmployee
-            console.log(this.salaryID)
-            console.log(row)
-            // 记录动作
-            this.actionType = 'edit'
         },
 
         calculatePersonalIncomeTax() {

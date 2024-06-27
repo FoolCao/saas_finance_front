@@ -161,8 +161,8 @@ export default {
                 })
                 this.getList()
             }
-
-        },
+            finally{}
+        }},
 
         async submit() {
             const data = {
