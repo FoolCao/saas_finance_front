@@ -247,19 +247,19 @@ export const menuRoutes = [
     ]
   },
 
-  // //期末结转
-  // {
-  //   path: '/carryover',
-  //   component: () => import('@/layout/Layout.vue'),
-  //   meta: { title: '期末结转', menu: true, icon: 'el-icon-s-marketing', role: ['财务', '管理员'] },
-  //   children: [
-  //     {
-  //       path: '',
-  //       meta: { title: '期末结转' },
-  //       component: () => import('@/views/carryover/CarryOver'),
-  //     },
-  //   ]
-  // },
+  //期末结转
+  {
+    path: '/carryover',
+    component: () => import('@/layout/Layout.vue'),
+    meta: { title: '期末结转', menu: true, icon: 'el-icon-s-marketing' },
+    children: [
+      {
+        path: '',
+        meta: { title: '期末结转' },
+        component: () => import('@/views/carryover/Last.vue'),
+      },
+    ]
+  }
 
   //员工中心
   // {
