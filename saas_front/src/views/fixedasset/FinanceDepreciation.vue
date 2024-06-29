@@ -81,6 +81,12 @@
                                 {{ new Date(scope.row.duringTime).toLocaleDateString() }}
                             </template>
                         </el-table-column>
+                        <el-table-column fixed="right" label="生成凭证" align="center">
+                            <template #default="{ row }">
+                                <el-button v-if="row.voucherState === 0" type="text" size="medium"
+                                    icon="el-icon-document" @click="updateApprovalStatus(row)">生成凭证</el-button>
+                            </template>
+                        </el-table-column>
                     </el-table>
                     <span slot="footer" class="dialog-footer">
                         <el-button @click="dialogVisible = false">关闭</el-button>
@@ -238,6 +244,26 @@ export default {
         },
         addopen() {
             this.addshow = true
+        },
+        async updateApprovalStatus(row) {
+            console.log(row)
+            const res = await axios({
+                url: "http://localhost:8081/salary/updateStatus",
+                method: "get",
+                params: {
+                    id: row.id
+                }
+            })
+            // this.getList()
+            localStorage.setItem('summary', this.summary)
+            localStorage.setItem('debitAmount', row.zg)
+            localStorage.setItem('text', this.text)
+            // 等待两秒后跳转页面
+            Message.success('即将进入凭证界面')
+            setTimeout(() => {
+                // 跳转页面
+                this.$router.push('/voucher/Voucher?type=1');
+            }, 1000);
         }
     }
 }

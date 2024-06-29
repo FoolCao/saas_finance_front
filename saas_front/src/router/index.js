@@ -27,7 +27,7 @@ export const menuRoutes = [
     children: [
       {
         // 等价于取父亲的path
-        path: '',
+        path: '/Home',
         meta: { title: '首页', menu: true },
         component: () => import('@/views/home/Home.vue')
       }
@@ -38,7 +38,7 @@ export const menuRoutes = [
   {
     path: '/voucher',
     component: () => import('@/layout/Layout.vue'),
-    meta: { title: '凭证管理', menu: true, icon: 'el-icon-postcard', role: ['财务', '管理员'] },
+    meta: { title: '凭证管理', menu: true, icon: 'el-icon-postcard'},
     children: [
       {
         // 等价于取父亲的path

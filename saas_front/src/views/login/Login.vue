@@ -1,7 +1,7 @@
 <template>
   <div class="login-wrapper">
     <div class="login-form">
-      <h2 class="login-title">欢迎来到餐饮管理系统</h2>
+      <h2 class="login-title">欢迎来到智慧财务管理系统</h2>
       <!-- 表单的容器 -->
       <el-form ref="ruleform" :model="form" :rules="rules">
 
@@ -9,7 +9,7 @@
         <el-form-item prop="account">
           <!-- 该表单项的内容 -->
           <el-input suffix-icon="icon-yonghu iconfont" prefix-icon="el-icon-search" placeholder="请输入手机号/邮箱"
-            v-model="form.content"></el-input>
+            v-model="form.username"></el-input>
         </el-form-item>
 
         <!-- 用户密码 -->
@@ -53,7 +53,7 @@ export default {
 
       // 表单的数据
       form: {
-        content: '',
+        username: '',
         password: '',
         // role: '',
       },
@@ -78,24 +78,23 @@ export default {
 
       const LoginResult = await axios({
         method: "post",
-        url: "http://localhost:8080/employee/login",
+        url: "http://localhost:8081/admin/login",
         data: this.form,
       })
       // 登录成功，把用户的id和用户的角色存放到本地
-      if (LoginResult.data.code == 200) {
-        localStorage.setItem("storeID", LoginResult.data.data.storeID);
-        localStorage.setItem("bookID", LoginResult.data.data.bookID);
+      if (LoginResult.data.code == 0) {
+        localStorage.setItem("bookID", LoginResult.data.data.id);
         localStorage.setItem("employeeDes", LoginResult.data.data.employeeDes);
-        localStorage.setItem("employeeID", LoginResult.data.data.employeeID);
-        localStorage.setItem("role", LoginResult.data.data.roleName);
+        localStorage.setItem("employeeID", LoginResult.data.data.id);
+        localStorage.setItem("role", LoginResult.data.data.rname);
         // 根据角色
         if (localStorage.getItem('role') == '财务') {
           localStorage.setItem('name',LoginResult.data.data.employeeID)
           // 等待两秒后跳转页面
-          Message.success('即将进入门店界面')
+          Message.success('即将进入账套界面')
           setTimeout(() => {
             // 跳转页面
-            this.$router.push('/Store');
+            this.$router.push('/FinanceAccountBooks');
           }, 2000);
         }else if (localStorage.getItem('role') == '管理员') {
           Message.success('即将进入门店界面')
@@ -111,7 +110,7 @@ export default {
           Message.success('即将进入员工主界面')
           setTimeout(() => {
             // 跳转页面
-            this.$router.push('/personalReimbursement');
+            this.$router.push('/FinanceAccountBooks');
           }, 2000);
         }
       } else {

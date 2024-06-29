@@ -138,7 +138,7 @@ export default {
 
     async getCollectionDataList() {
       const res = await axios({
-        url: 'http://localhost:8080/voucher/voucher',
+        url: 'http://localhost:8081/voucher/voucher',
         method: 'get',
         params: {
           pageno: this.pageno,
@@ -172,7 +172,7 @@ export default {
 
     async getPayDataList() {
       const res = await axios({
-        url: 'http://localhost:8080/voucher/voucher',
+        url: 'http://localhost:8081/voucher/voucher',
         method: 'get',
         params: {
           pageno: this.pageno,
@@ -208,7 +208,7 @@ export default {
     async getPaymentList() {
       const currentYearMonth = dayjs().format('YYYY-MM');
       const res = await axios({
-        url: 'http://localhost:8080/voucher/voucher',
+        url: 'http://localhost:8081/voucher/voucher',
         method: 'get',
         params: {
           pageno: this.pageno,
@@ -243,7 +243,7 @@ export default {
     async getCollectionList() {
       const currentYearMonth = dayjs().format('YYYY-MM');
       const res = await axios({
-        url: 'http://localhost:8080/voucher/voucher',
+        url: 'http://localhost:8081/voucher/voucher',
         method: 'get',
         params: {
           pageno: this.pageno,
