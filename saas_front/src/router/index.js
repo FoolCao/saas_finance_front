@@ -77,7 +77,29 @@ export const menuRoutes = [
 
     ]
   },
-
+  //日记账管理
+{
+  path:'/bookkeeping',
+  component: () => import('@/layout/Layout.vue'),
+  meta: { title: '日记账管理', menu: true, icon: 'el-icon-tickets' },
+  children: [
+    {
+      path: '/Bookkeeping',
+      component: () => import('@/views/bookkeeping/Bookkeeping'),
+      meta: { title: '记账列表' },
+    },
+    {
+      path: '/Stats',
+      component: () => import('@/views/bookkeeping/Stats'),
+      meta: { title: '记账汇总' },
+    },
+    {
+      path: '/SubjectAccount',
+      component: () => import('@/views/bookkeeping/SubjectAccount'),
+      meta: { title: '账户设置' },
+    }
+  ]
+},
    //系统管理
    {
     path:'/system',
@@ -247,19 +269,19 @@ export const menuRoutes = [
     ]
   },
 
-  // //期末结转
-  // {
-  //   path: '/carryover',
-  //   component: () => import('@/layout/Layout.vue'),
-  //   meta: { title: '期末结转', menu: true, icon: 'el-icon-s-marketing', role: ['财务', '管理员'] },
-  //   children: [
-  //     {
-  //       path: '',
-  //       meta: { title: '期末结转' },
-  //       component: () => import('@/views/carryover/CarryOver'),
-  //     },
-  //   ]
-  // },
+  //期末结转
+  {
+    path: '/carryover',
+    component: () => import('@/layout/Layout.vue'),
+    meta: { title: '期末结转', menu: true, icon: 'el-icon-s-marketing' },
+    children: [
+      {
+        path: '',
+        meta: { title: '期末结转' },
+        component: () => import('@/views/carryover/Last.vue'),
+      },
+    ]
+  }
 
   //员工中心
   // {
