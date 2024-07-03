@@ -351,10 +351,12 @@
 
 import dayjs from "dayjs";
 import axios from "axios";
+
 export default {
 
     data() {
         return {
+            token: localStorage.getItem('token'),
             tabPosition: 'left',
             accountBooksList: [],
             userList: [],
@@ -452,10 +454,12 @@ export default {
         this.getPermissionList()
         this.role = localStorage.getItem('role');
         this.storeId = localStorage.getItem('storeId');
+        console.log(this.token)
     },
     methods: {
         async getUriList() {
-
+        // 设置默认请求头
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             const res = await axios({
                 url: "http://localhost:8081/log/list",
                 method: "get",
@@ -488,7 +492,9 @@ export default {
             // 重新请求数据
             this.getUriList()
         },
-        async getUserList() {
+
+
+        async getUserList(token) {
             const res = await axios({
                 method: "get",
                 url: "http://localhost:8081/admin/list",

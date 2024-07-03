@@ -27,7 +27,7 @@ export const menuRoutes = [
     children: [
       {
         // 等价于取父亲的path
-        path: '/Home',
+        path: '',
         meta: { title: '首页', menu: true },
         component: () => import('@/views/home/Home.vue')
       }
@@ -187,6 +187,18 @@ export const menuRoutes = [
         path: '',
         meta: { title: '报销管理', menu: true },
         component: () => import('@/views/reimbursement/FinanceReimbursement.vue'),
+      },
+    ]
+  },
+  {
+    path: '/statement',
+    component: () => import('@/layout/Layout.vue'),
+    meta: { title: '报表管理', menu: true, icon: 'el-icon-coin'},
+    children: [
+      {
+        path: '',
+        meta: { title: '报表管理', menu: true },
+        component: () => import('@/views/statement/Statement.vue'),
       },
     ]
   },

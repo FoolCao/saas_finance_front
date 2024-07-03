@@ -87,6 +87,7 @@ export default {
         localStorage.setItem("employeeDes", LoginResult.data.data.employeeDes);
         localStorage.setItem("employeeID", LoginResult.data.data.id);
         localStorage.setItem("role", LoginResult.data.data.rname);
+        localStorage.setItem("token", LoginResult.data.data);
         // 根据角色
         if (localStorage.getItem('role') == '财务') {
           localStorage.setItem('name',LoginResult.data.data.employeeID)
