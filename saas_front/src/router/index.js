@@ -101,28 +101,28 @@ export const menuRoutes = [
   ]
 },
    //系统管理
-   {
-    path:'/system',
-    component: () => import('@/layout/Layout.vue'),
-    meta: { title: '系统管理', menu: true, icon: 'el-icon-s-tools' },
-    children: [
-      {
-        path: '/System',
-        component: () => import('@/views/system/System'),
-        meta: { title: '员工管理' },
-      },
-      {
-        path: '/Role',
-        component: () => import('@/views/system/Role'),
-        meta: { title: '角色管理' },
-      },
-      {
-        path: '/LogsUri',
-        component: () => import('@/views/system/LogsUri'),
-        meta: { title: '操作日志' },
-      }
-    ]
-  },
+  //  {
+  //   path:'/system',
+  //   component: () => import('@/layout/Layout.vue'),
+  //   meta: { title: '系统管理', menu: true, icon: 'el-icon-s-tools' },
+  //   children: [
+  //     {
+  //       path: '/System',
+  //       component: () => import('@/views/system/System'),
+  //       meta: { title: '员工管理' },
+  //     },
+  //     {
+  //       path: '/Role',
+  //       component: () => import('@/views/system/Role'),
+  //       meta: { title: '角色管理' },
+  //     },
+  //     {
+  //       path: '/LogsUri',
+  //       component: () => import('@/views/system/LogsUri'),
+  //       meta: { title: '操作日志' },
+  //     }
+  //   ]
+  // },
   // 个人中心
   {
     path: '/personal',

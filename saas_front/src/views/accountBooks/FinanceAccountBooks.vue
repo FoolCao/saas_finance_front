@@ -84,7 +84,6 @@
                         <el-table :data="roleList" border style="width: 100%">
                             <el-table-column prop="id" label="序号" align="center"> </el-table-column>
                             <el-table-column prop="name" label="员工姓名" align="center"> </el-table-column>
-                            <el-table-column prop="pname" label="用户名" align="center"> </el-table-column>
                             <el-table-column prop="description" label="描述" align="center"> </el-table-column>
 
                             <el-table-column fixed="right" label="操作" width="150" align="center">
