@@ -124,10 +124,14 @@ export default {
             this.getList()
         },
         async getList() {
+            const token = localStorage.getItem("token");
             axios.get('http://localhost:8081/salary/SelectTotalSalary', {
                 params: {
                     time1: this.value1[0],
                     time2: this.value1[1],
+                },
+                headers:{
+                'token':token
                 }
                 })
                 .then(response => {

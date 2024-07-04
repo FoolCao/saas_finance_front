@@ -457,12 +457,18 @@ export default {
         console.log(this.token)
     },
     methods: {
+        async getToken() {
+            const token = localStorage.getItem('token');
+
+            // 设置默认请求头
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        },
         async getUriList() {
-        // 设置默认请求头
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url: "http://localhost:8081/log/list",
+                url: "http://39.107.88.156:8080/sass_finance/log/list",
                 method: "get",
+                // headers: localStorage.getItem("token"),
                 params: {
                     page: this.pageno,
                     limit: this.pagesize,
@@ -470,6 +476,9 @@ export default {
                     startTime: this.value2[0],
                     overTime: this.value2[1]
                 },
+                headers:{
+                'token':token
+                }
             });
             // 修改日期格式
             this.list = res.data.data.map(item => {
@@ -494,10 +503,14 @@ export default {
         },
 
 
-        async getUserList(token) {
+        async getUserList() {
+            const token = localStorage.getItem("token");
             const res = await axios({
                 method: "get",
-                url: "http://localhost:8081/admin/list",
+                url: "http://39.107.88.156:8080/sass_finance/admin/list",
+                headers:{
+                'token':token
+                }
             });
             // 遍历返回的数据，将 createTime 和 endTime 转换为指定格式的日期时间字符串
             this.userList = res.data.data.map(item => {
@@ -507,9 +520,13 @@ export default {
             });
         },
         async getRoleList() {
+            const token = localStorage.getItem("token");
             const res = await axios({
                 method: "get",
-                url: "http://localhost:8081/role/list",
+                url: "http://39.107.88.156:8080/sass_finance/role/list",
+                headers:{
+                'token':token
+                }
             }); 0
             // 遍历返回的数据，将 createTime 和 endTime 转换为指定格式的日期时间字符串
             this.roleList = res.data.data.map(item => {
@@ -518,9 +535,13 @@ export default {
             });
         },
         async getPermissionList() {
+            const token = localStorage.getItem("token");
             const res = await axios({
                 method: "get",
-                url: "http://localhost:8081/permission/list",
+                url: "http://39.107.88.156:8080/sass_finance/permission/list",
+                headers:{
+                'token':token
+                }
             }); 0
             // 遍历返回的数据，将 createTime 和 endTime 转换为指定格式的日期时间字符串
             this.permissionList = res.data.data.map(item => {
@@ -529,9 +550,13 @@ export default {
             });
         },
         async getList() {
+            const token = localStorage.getItem("token");
             const res = await axios({
                 method: "get",
-                url: "http://localhost:8081/account/page",
+                url: "http://39.107.88.156:8080/sass_finance/account/page",
+                headers:{
+                'token':token
+                }
             });
             // 遍历返回的数据，将 createTime 和 endTime 转换为指定格式的日期时间字符串
             this.accountBooksList = res.data.data.map(item => {
@@ -587,7 +612,7 @@ export default {
                 data.state = '启用'
             }
             const res = await axios({
-                url: "http://localhost:8081/account/update",
+                url: "http://39.107.88.156:8080/sass_finance/account/update",
                 method: 'post',
                 data: data
             })
@@ -606,7 +631,7 @@ export default {
                 state: '启用'
             }
             const res = await axios({
-                url: "http://localhost:8081/account/add",
+                url: "http://39.107.88.156:8080/sass_finance/account/add",
                 method: 'post',
                 data: data
             })
