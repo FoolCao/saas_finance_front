@@ -95,6 +95,7 @@ export default {
       this.cards.push({ title: `卡片${this.cards.length + 1}`, content: `这是卡片${this.cards.length + 1}的内容` });
     },
     async getShouVoucherList() {
+      const token = localStorage.getItem("token");
       this.cards=[];
       console.log(this.value2[0])
       console.log(this.value2[1])
@@ -105,7 +106,10 @@ export default {
           bookID: this.bookID,
           time1: this.value2[0],
           time2: this.value2[1]
-        },
+        }, 
+                headers: {
+                    'token': token
+                }
       });
       
       var result=res.data.data

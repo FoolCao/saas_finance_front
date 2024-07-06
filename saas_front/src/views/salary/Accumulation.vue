@@ -268,11 +268,13 @@ export default {
     created() {
         this.bookID = localStorage.getItem('bookID');
         this.getList()
+        
     },
 
     methods: {
 
         async updateApprovalStatus(row) {
+            const token = localStorage.getItem("token");
             console.log(row)
             const data = {
                 salaryId: row.salaryId,
@@ -281,7 +283,10 @@ export default {
             const res = await axios({
                 url: "http://localhost:8080/salary/update",
                 method: "post",
-                data: data
+                data: data, 
+                headers: {
+                    'token': token
+                }
             })
             // this.getList()
             localStorage.setItem('summary', this.summary)
@@ -301,6 +306,7 @@ export default {
             //     assetName: this.params.assetName ? dayjs(this.params.assetName).format('YYYY-MM-DD HH:mm:ss') : null,
             //     brandModel: this.params.brandModel ? dayjs(this.params.brandModel).format('YYYY-MM-DD HH:mm:ss') : null,
             // };
+            const token = localStorage.getItem("token");
             const res = await axios({
                 method: "get",
                 url: "http://localhost:8081/accumulate/list",
@@ -312,7 +318,10 @@ export default {
                     time1: this.value2[0],
                     time2: this.value2[1],
                     phone: this.phone
-                },
+                }, 
+                headers: {
+                    'token': token
+                }
             });
             // 修改日期格式
             this.list = res.data.data.map(item => {
@@ -359,6 +368,7 @@ export default {
         },
 
         async getAccumulationList(row) {
+            const token = localStorage.getItem("token");
             // const formattedParams = {
             //     ...this.params,
             //     assetName: this.params.assetName ? dayjs(this.params.assetName).format('YYYY-MM-DD HH:mm:ss') : null,
@@ -369,7 +379,10 @@ export default {
                 url: "http://localhost:8081/accumulate/detail",
                 params: {
                    id: row.id
-                },
+                }, 
+                headers: {
+                    'token': token
+                }
             });
            this.accumulation=res.data.data;
         },
@@ -431,10 +444,14 @@ export default {
             if (this.actionType === 'edit') {
                 data.salaryID = this.salaryID
             }
+            const token = localStorage.getItem("token");
             const res = await axios({
                 url: 'http://localhost:8081/salary/add',
                 method: 'post',
-                data: data
+                data: data, 
+                headers: {
+                    'token': token
+                }
             })
             if (res.data.code == 0) {
                 this.addFormVisible = false

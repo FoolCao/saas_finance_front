@@ -259,24 +259,27 @@ export default {
     },
     methods: {
 
-      submitUpload() {
-        this.$refs.upload.submit();
-      },
-      handleRemove(file, fileList) {
-        console.log(file, fileList);
-      },
-      handlePreview(file) {
-        console.log(file);
-      },
-    
+        submitUpload() {
+            this.$refs.upload.submit();
+        },
+        handleRemove(file, fileList) {
+            console.log(file, fileList);
+        },
+        handlePreview(file) {
+            console.log(file);
+        },
+
 
         async updateApprovalStatus(row) {
             console.log(row)
+            const token = localStorage.getItem("token");
             const res = await axios({
                 url: "http://localhost:8081/salary/updateStatus",
                 method: "get",
                 params: {
                     id: row.id
+                }, headers: {
+                    'token': token
                 }
             })
             // this.getList()
@@ -295,6 +298,7 @@ export default {
         // },
         async submitExport() {
             try {
+                const token = localStorage.getItem("token");
                 const res = await axios({
                     url: "http://localhost:8081/salary/export",
                     method: "get",
@@ -305,7 +309,9 @@ export default {
                         time1: this.value2[0],
                         time2: this.value2[1],
                         phone: this.phone
-                    }
+                    }, headers: {
+                    'token': token
+                }
                 });
 
                 // 创建一个blob链接
@@ -336,6 +342,7 @@ export default {
             //     assetName: this.params.assetName ? dayjs(this.params.assetName).format('YYYY-MM-DD HH:mm:ss') : null,
             //     brandModel: this.params.brandModel ? dayjs(this.params.brandModel).format('YYYY-MM-DD HH:mm:ss') : null,
             // };
+            const token = localStorage.getItem("token");
             const res = await axios({
                 method: "get",
                 url: "http://localhost:8081/salary/list",
@@ -347,7 +354,9 @@ export default {
                     time1: this.value2[0],
                     time2: this.value2[1],
                     phone: this.phone
-                },
+                }, headers: {
+                    'token': token
+                }
             });
             // 修改日期格式
             this.list = res.data.data.map(item => {
@@ -458,11 +467,17 @@ export default {
             if (this.actionType === 'edit') {
                 data.salaryID = this.salaryID
             }
+            const token = localStorage.getItem("token");
             const res = await axios({
                 url: 'http://localhost:8081/salary/add',
                 method: 'post',
-                data: data
+                data: data, 
+                headers: {
+                    'token': token
+                }
+               
             })
+            this.getList()
             if (res.data.code == 0) {
                 this.dialogFormVisible = false
                 this.getList()

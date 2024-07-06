@@ -181,7 +181,7 @@ export default {
 
     methods: {
         async getList() {
-
+          const token = localStorage.getItem("token");
             const res = await axios({
                 url: "http://localhost:8081/accumulation/list",
                 method: "get",
@@ -189,7 +189,10 @@ export default {
                     page: this.pageno,
                     limit: this.pagesize,
                     ...this.params
-                },
+                }, 
+                headers: {
+                    'token': token
+                }
             });
             this.list = res.data.data;
             this.total = res.data.count;
@@ -235,10 +238,14 @@ export default {
           const data = {
             id: row.id,
           }
+          const token = localStorage.getItem("token");
             const res = await axios({
               url: "http://localhost:8081/accumulation/updateStatus",
               method: "post",
-              params: data
+              params: data, 
+                headers: {
+                    'token': token
+                }
             })
             this.getList();
       },
@@ -246,10 +253,14 @@ export default {
         const data = {
           ...this.userFormData,
         }
+        const token = localStorage.getItem("token");
         const res = await axios({
           url: "http://localhost:8081/accumulation/update",
           method: "post",
-          data: data
+          data: data, 
+                headers: {
+                    'token': token
+                }
         })
         this.getList()
         this.show = false
@@ -258,10 +269,14 @@ export default {
         const data = {
           ...this.userFormData
         }
+        const token = localStorage.getItem("token");
         const res = await axios({
           url: "http://localhost:8081/accumulation/add",
           method: "post",
-          data: data
+          data: data, 
+                headers: {
+                    'token': token
+                }
         })
         this.getList()
         this.addshow = false
