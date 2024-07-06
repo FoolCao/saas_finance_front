@@ -193,14 +193,18 @@ export default {
     },
     methods: {
         async fetchData() {
+            const token = localStorage.getItem('token');
             const res = await axios({
                 method: "get",
-                url: "http://localhost:8081/depreciation/page",
+                url: "http://39.107.88.156:8080/sass_finance/depreciation/page",
                 params: {
                     page: this.page,
                     limit: this.limit,
                     ...this.params
                 },
+                headers:{
+                'token':token
+                }
             });
             this.tableData = res.data.data.map(item => ({
                 ...item,
@@ -214,9 +218,13 @@ export default {
             this.dialogVisible = true
         },
         async getType() {
+            const token = localStorage.getItem('token');
             const res = await axios({
                 method: "get",
-                url: "http://localhost:8081/depreciationType/findAll",
+                url: "http://39.107.88.156:8080/sass_finance/depreciationType/findAll",
+                headers:{
+                'token':token
+                }
             });
             this.typeList = res.data.data
             this.typeList = this.typeList.filter(type => type.statue !== '禁用');
@@ -231,13 +239,17 @@ export default {
             return moment(value).format('YYYY-MM-DD HH:mm:ss');
         },
         async addsubmit() {
+            const token = localStorage.getItem("token");
             const data = {
                 ...this.formData
             }
             const res = await axios({
-                url: "http://localhost:8081/depreciation/add",
+                url: "http://39.107.88.156:8080/sass_finance/depreciation/add",
                 method: "post",
-                data: data
+                data: data,
+                headers:{
+                'token':token
+                }
             })
             this.fetchData()
             this.addshow = false
@@ -247,11 +259,15 @@ export default {
         },
         async updateApprovalStatus(row) {
             console.log(row)
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url: "http://localhost:8081/salary/updateStatus",
+                url: "http://39.107.88.156:8080/sass_finance/salary/updateStatus",
                 method: "get",
                 params: {
                     id: row.id
+                },
+                headers:{
+                'token':token
                 }
             })
             // this.getList()

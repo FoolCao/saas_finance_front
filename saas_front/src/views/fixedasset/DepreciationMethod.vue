@@ -216,14 +216,18 @@ export default {
     },
     methods: {
         async DepreciationMethodgetList() {
+            const token = localStorage.getItem("token");
             const res = await axios({
                 method: "get",
-                url: "http://localhost:8081/depreciationMethod/page",
+                url: "http://39.107.88.156:8080/sass_finance/depreciationMethod/page",
                 params: {
                     page: this.page,
                     limit: this.limit,
                     ...this.params
                 },
+                headers:{
+                'token':token
+                }
             });
             this.DepreciationMethodList = res.data.data
             this.total = res.data.count
@@ -243,14 +247,17 @@ export default {
             this.DepreciationMethodgetList()
         },
         async addsubmit() {
-
+            const token = localStorage.getItem("token");
             const data = {
                 ...this.formData
             }
             const res = await axios({
-                url: "http://localhost:8081/depreciationMethod/add",
+                url: "http://39.107.88.156:8080/sass_finance/depreciationMethod/add",
                 method: "post",
-                data: data
+                data: data,
+                headers:{
+                'token':token
+                }
             })
             this.DepreciationMethodgetList()
             this.addshow = false
@@ -259,6 +266,7 @@ export default {
             this.addshow = true
         },
         async remove(row) {
+            const token = localStorage.getItem('token');
             if (row.statue === '启用') {
                 this.$message.warning('不能删除启用项，请先设置为禁用');
             } else {
@@ -268,9 +276,11 @@ export default {
                     type: 'warning'
                 }).then(() => {
                     axios({
-                        url: "http://localhost:8081/depreciationMethod/delete/?id=" + row.id,
+                        url: "http://39.107.88.156:8080/sass_finance/depreciationMethod/delete/?id=" + row.id,
                         method: "delete",
-
+                        headers:{
+                            'token':token
+                        }
                     })
                     this.DepreciationMethodgetList()
                     this.$message({
@@ -300,14 +310,18 @@ export default {
             this.id = row.id
         },
         async updatesubmit() {
+            const token = localStorage.getItem('token');
             const data = {
                 id: this.id,
                 ...this.formData
             }
             const res = await axios({
-                url: "http://localhost:8081/depreciationMethod/update",
+                url: "http://39.107.88.156:8080/sass_finance/depreciationMethod/update",
                 method: "put",
-                data: data
+                data: data,
+                headers:{
+                'token':token
+                }
             })
             this.DepreciationMethodgetList()
             this.updateshow = false
@@ -322,6 +336,7 @@ export default {
             console.log(this.multipleSelection); // 输出multipleSelection数组，包含所有选中行的id
         },
         batchdelete() {
+            const token = localStorage.getItem('token');
             const data = {
                 ids: this.multipleSelection,
             }
@@ -332,9 +347,12 @@ export default {
                 type: 'warning'
             }).then(() => {
                 axios({
-                    url: "http://localhost:8081/depreciationMethod/delete/batch",
+                    url: "http://39.107.88.156:8080/sass_finance/depreciationMethod/delete/batch",
                     method: "delete",
                     data: data,
+                    headers:{
+                        'token':token
+                    }
                 })
                 this.DepreciationMethodgetList()
                 this.$message({

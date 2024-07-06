@@ -121,14 +121,18 @@ export default {
             console.log(tab, event);
         },
         async updateApprovalStatus(row) {
+            const token = localStorage.getItem("token");
             const data = {
                 reimbursementID: row.reimbursementID,
                 isToVoucher: "是"
             }
             const res = await axios({
-                url: "http://localhost:8080/reimbursement/updateReimbursementToVarch",
+                url: "http://39.107.88.156:8080/sass_finance/reimbursement/updateReimbursementToVarch",
                 method: "post",
-                data: data
+                data: data,
+                headers:{
+                'token':token
+                }
             })
             // this.getList()
             localStorage.setItem('summary', this.summary)
@@ -143,33 +147,45 @@ export default {
         },
         //账户名称汇总
          async getSubjectAccountNameList(){
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url:"http://localhost:8081/bookkeeping/statsBySubjectAccount",
+                url:"http://39.107.88.156:8080/sass_finance/bookkeeping/statsBySubjectAccount",
                 method:"get",
                 params:{
                     subjectAccountName:this.subjectAccountName,
                     bookId:this.bookId,
                     //bookId:6,
+                },
+                headers:{
+                'token':token
                 }
             });
             this.subjectAccountNameList=res.data.data
          },
          //收支类别汇总
          async getClassificationList(){
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url:"http://localhost:8081/bookkeeping/statsByClassification",
+                url:"http://39.107.88.156:8080/sass_finance/bookkeeping/statsByClassification",
                 method:"get",
                 params:{
                     classification:this.classification,
+                },
+                headers:{
+                'token':token
                 }
             });
             this.classificationList=res.data.data
          },
          //会计科目汇总
          async getAccountingSubject(){
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url:"http://localhost:8081/bookkeeping/statsByAccountingSubject",
+                url:"http://39.107.88.156:8080/sass_finance/bookkeeping/statsByAccountingSubject",
                 method:"get",
+                headers:{
+                'token':token
+                }
             });
             this.accountingSubjectList=res.data.data
          },

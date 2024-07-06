@@ -38,7 +38,7 @@
                 </el-row>
             </div>
             <div>
-                <el-upload class="upload-demo" ref="upload" action="http://localhost:8081/salary/import"
+                <el-upload class="upload-demo" ref="upload" action="http://39.107.88.156:8080/sass_finance/salary/import"
                     :on-preview="handlePreview" :on-remove="handleRemove" :file-list="file" :auto-upload="false">
                     <el-button slot="trigger" size="small" type="">选取文件</el-button>
                     <el-button style="margin-left: 10px;" size="small" type="primary"
@@ -273,12 +273,16 @@ export default {
     
 
         async updateApprovalStatus(row) {
+            const token = localStorage.getItem("token");
             console.log(row)
             const res = await axios({
-                url: "http://localhost:8081/salary/updateStatus",
+                url: "http://39.107.88.156:8080/sass_finance/salary/updateStatus",
                 method: "get",
                 params: {
                     id: row.id
+                },
+                headers:{
+                'token':token
                 }
             })
             // this.getList()
@@ -296,9 +300,10 @@ export default {
         //     console.log(this.file)
         // },
         async submitExport() {
+            const token = localStorage.getItem("token");
             try {
                 const res = await axios({
-                    url: "http://localhost:8081/salary/export",
+                    url: "http://39.107.88.156:8080/sass_finance/salary/export",
                     method: "get",
                     responseType: 'blob', // 告诉axios我们期望接收一个blob
                     params: {
@@ -307,7 +312,10 @@ export default {
                         time1: this.value2[0],
                         time2: this.value2[1],
                         phone: this.phone
-                    }
+                    },
+                headers:{
+                'token':token
+                }
                 });
 
                 // 创建一个blob链接
@@ -333,6 +341,7 @@ export default {
         },
 
         async getList() {
+            const token = localStorage.getItem("token");
             // const formattedParams = {
             //     ...this.params,
             //     assetName: this.params.assetName ? dayjs(this.params.assetName).format('YYYY-MM-DD HH:mm:ss') : null,
@@ -340,7 +349,7 @@ export default {
             // };
             const res = await axios({
                 method: "get",
-                url: "http://localhost:8081/salary/list",
+                url: "http://39.107.88.156:8080/sass_finance/salary/list",
                 header: localStorage.getItem("token"),
                 params: {
                     page: this.pageno,
@@ -351,6 +360,9 @@ export default {
                     time2: this.value2[1],
                     phone: this.phone
                 },
+                headers:{
+                'token':token
+                }
             });
             // 修改日期格式
             this.list = res.data.data.map(item => {
@@ -453,6 +465,7 @@ export default {
         },
 
         async submit() {
+            const token = localStorage.getItem("token");
             const data = {
                 ...this.userFormData,
                 bookID: this.bookID,
@@ -462,9 +475,12 @@ export default {
                 data.salaryID = this.salaryID
             }
             const res = await axios({
-                url: 'http://localhost:8081/salary/add',
+                url: 'http://39.107.88.156:8080/sass_finance/salary/add',
                 method: 'post',
-                data: data
+                data: data,
+                headers:{
+                'token':token
+                }
             })
             if (res.data.code == 0) {
                 this.dialogFormVisible = false

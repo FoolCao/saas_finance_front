@@ -75,11 +75,14 @@ export default {
     },
     // 提交表单 async
     async submit() {
-
+      const token = localStorage.getItem("token");
       const LoginResult = await axios({
         method: "post",
-        url: "http://localhost:8081/admin/login",
+        url: "http://39.107.88.156:8080/sass_finance/admin/login",
         data: this.form,
+        headers:{
+          'token':token
+        }
       })
       // 登录成功，把用户的id和用户的角色存放到本地
       if (LoginResult.data.code == 0) {

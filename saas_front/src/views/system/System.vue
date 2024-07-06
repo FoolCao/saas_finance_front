@@ -218,30 +218,42 @@ export default {
 
   methods: {
     async getList() {
+      const token = localStorage.getItem('token');
       const res = await axios({
         method: "get",
-        url: "http://localhost:8080/employee/findAllEmployee",
+        url: "http://39.107.88.156:8080/sass_finance/employee/findAllEmployee",
         params: {
           pageno: this.pageno,
           pagesize: this.pagesize,
           ...this.params
         },
+                headers:{
+                'token':token
+                }
       });
       this.list = res.data.data;
       console.log(this.list)
       this.total = res.data.count;
     },
     async getRole() {
+      const token = localStorage.getItem('token');
       const resRole = await axios({
         method: "get",
-        url: "http://localhost:8080/role/findAllRoleName",
+        url: "http://39.107.88.156:8080/sass_finance/role/findAllRoleName",
+                headers:{
+                'token':token
+                }
       });
       this.roleList = resRole.data.data;
     },
     async getStore() {
+      const token = localStorage.getItem("token");
       const resStore = await axios({
         method: "get",
-        url: "http://localhost:8080/store/findAll",
+        url: "http://39.107.88.156:8080/sass_finance/store/findAll",
+                headers:{
+                'token':token
+                }
       });
       this.storeList = resStore.data.data;
     },
@@ -328,6 +340,7 @@ export default {
 
     //新增或修改固定资产
     async submit() {
+      const token = localStorage.getItem("token");
       // 拷贝userFormData到data
       const data = { ...this.userFormData }
       // 修改的时候需要把id带过去
@@ -340,9 +353,12 @@ export default {
           data.endTime = ""
         }
         const res = await axios({
-          url: 'http://localhost:8080/employee/updateEmployee',
+          url: 'http://39.107.88.156:8080/sass_finance/employee/updateEmployee',
           method: 'post',
-          data: data
+          data: data,
+                headers:{
+                'token':token
+                }
         })
         console.log(res.data.code)
         if (res.data.code === 200) {
@@ -357,9 +373,12 @@ export default {
         this.getList()
       } else {
         const res = await axios({
-          url: 'http://localhost:8080/employee/insertEmployee',
+          url: 'http://39.107.88.156:8080/sass_finance/employee/insertEmployee',
           method: 'post',
-          data: data
+          data: data,
+                headers:{
+                'token':token
+                }
         })
         console.log(res.data.code)
         if (res.data.code === 200) {
@@ -376,14 +395,17 @@ export default {
     },
     //删除固定资产
     async removeEmployee(id) {
-
+      const token = localStorage.getItem("token");
       const res = await axios({
-        url: 'http://localhost:8080/employee/deleteEmployee',
+        url: 'http://39.107.88.156:8080/sass_finance/employee/deleteEmployee',
         method: 'post',
         // data一定是个对象，不能直接把id给data，把id变成一个对象给到data
         data: {
           employeeID: id
-        }
+        },
+                headers:{
+                'token':token
+                }
       })
       this.getList()
     },

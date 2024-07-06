@@ -284,38 +284,51 @@ export default {
             this.inputValue = this.inputValue.replace(/[^0-9]/g, "").charAt(0);
         },
         async getSummaryList() {
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url: "http://localhost:8081/summary/findAll",
+                url: "http://39.107.88.156:8080/sass_finance/summary/findAll",
                 method: "get",
                 params: {
                     ...this.params,
                     pageno: this.pageno,
                     pagesize: this.pagesize,
+                },
+                headers:{
+                'token':token
                 }
             });
             this.summarylist = res.data.data;
         },
         async getaccountingAccountList() {
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url: "http://localhost:8081/accounting/findAll",
+                url: "http://39.107.88.156:8080/sass_finance/accounting/findAll",
                 method: "get",
                 params: {
                     ...this.params,
                     pageno: this.pageno,
                     pagesize: this.pagesize,
+                },
+                headers:{
+                'token':token
                 }
             });
             this.accountingAccountList = res.data.data;
         },
         async getVoucherWordList() {
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url: "http://localhost:8081/voucherWord/findAll",
+                url: "http://39.107.88.156:8080/sass_finance/voucherWord/findAll",
                 method: "get",
+                headers:{
+                'token':token
+                }
             });
             this.voucherWordlist = res.data.data
         },
         
         async addVoucher() {
+            const token = localStorage.getItem("token");
             console.log(this.tableData[0].debitAmount, typeof this.tableData[0].debitAmount, '+++++')
             console.log(this.tableData[1].creditAmount, typeof this.tableData[1].creditAmount, "++++++")
             
@@ -335,9 +348,12 @@ export default {
                 })),
             };
             const res = await axios({
-                url: 'http://localhost:8081/voucher/add',
+                url: 'http://39.107.88.156:8080/sass_finance/voucher/add',
                 method: 'post',
-                data: data
+                data: data,
+                headers:{
+                'token':token
+                }
             })
             if (res.data.code === 0) {
                 Message.success('新增成功,即将进入凭证列表')

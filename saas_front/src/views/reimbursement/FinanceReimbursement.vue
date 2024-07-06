@@ -90,14 +90,18 @@ export default {
     },
     methods: {
         async updateApprovalStatus(row) {
+            const token = localStorage.getItem("token");
             const data = {
                 reimbursementID: row.reimbursementID,
                 isToVoucher: "是"
             }
             const res = await axios({
-                url: "http://localhost:8080/reimbursement/updateReimbursementToVarch",
+                url: "http://39.107.88.156:8080/sass_finance/reimbursement/updateReimbursementToVarch",
                 method: "post",
-                data: data
+                data: data,
+                headers:{
+                'token':token
+                }
             })
             // this.getList()
             localStorage.setItem('summary', this.summary)
@@ -111,19 +115,24 @@ export default {
             }, 1000);
         },
          async getCategoryList(){
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url:"http://localhost:8080/reimbursement/findAllCategoryList",
+                url:"http://39.107.88.156:8080/sass_finance/reimbursement/findAllCategoryList",
                 method:"get",
                 params:{
                     bookId:this.bookId,
                     //bookId:6,
+                },
+                headers:{
+                'token':token
                 }
             });
             this.categoryList=res.data.data
          },
         async getList() {
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url: "http://localhost:8080/reimbursement/findAll",
+                url: "http://39.107.88.156:8080/sass_finance/reimbursement/findAll",
                 method: "get",
                 params: {
                     ...this.params,
@@ -131,6 +140,9 @@ export default {
                     pagesize: this.pagesize,
                     bookId:this.bookId,
                     //bookId:6,
+                },
+                headers:{
+                'token':token
                 }
             });
             this.list = res.data.data.map(item => {

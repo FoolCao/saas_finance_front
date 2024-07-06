@@ -125,7 +125,7 @@ export default {
         },
         async getList() {
             const token = localStorage.getItem("token");
-            axios.get('http://localhost:8081/salary/SelectTotalSalary', {
+            axios.get('http://39.107.88.156:8080/sass_finance/salary/SelectTotalSalary', {
                 params: {
                     time1: this.value1[0],
                     time2: this.value1[1],

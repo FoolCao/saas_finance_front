@@ -273,15 +273,19 @@ export default {
     methods: {
 
         async updateApprovalStatus(row) {
+            const token = localStorage.getItem("token");
             console.log(row)
             const data = {
                 salaryId: row.salaryId,
                 isToVoucher: "是"
             }
             const res = await axios({
-                url: "http://localhost:8080/salary/update",
+                url: "http://39.107.88.156:8080/sass_finance/salary/update",
                 method: "post",
-                data: data
+                data: data,
+                headers:{
+                'token':token
+                }
             })
             // this.getList()
             localStorage.setItem('summary', this.summary)
@@ -296,6 +300,7 @@ export default {
         },
 
         async getList() {
+            const token = localStorage.getItem("token");
             // const formattedParams = {
             //     ...this.params,
             //     assetName: this.params.assetName ? dayjs(this.params.assetName).format('YYYY-MM-DD HH:mm:ss') : null,
@@ -303,7 +308,7 @@ export default {
             // };
             const res = await axios({
                 method: "get",
-                url: "http://localhost:8081/accumulate/list",
+                url: "http://39.107.88.156:8080/sass_finance/accumulate/list",
                 params: {
                     page: this.pageno,
                     limit: this.pagesize,
@@ -313,6 +318,9 @@ export default {
                     time2: this.value2[1],
                     phone: this.phone
                 },
+                headers:{
+                'token':token
+                }
             });
             // 修改日期格式
             this.list = res.data.data.map(item => {
@@ -359,6 +367,7 @@ export default {
         },
 
         async getAccumulationList(row) {
+            const token = localStorage.getItem("token");
             // const formattedParams = {
             //     ...this.params,
             //     assetName: this.params.assetName ? dayjs(this.params.assetName).format('YYYY-MM-DD HH:mm:ss') : null,
@@ -366,10 +375,13 @@ export default {
             // };
             const res = await axios({
                 method: "get",
-                url: "http://localhost:8081/accumulate/detail",
+                url: "http://39.107.88.156:8080/sass_finance/accumulate/detail",
                 params: {
                    id: row.id
                 },
+                headers:{
+                'token':token
+                }
             });
            this.accumulation=res.data.data;
         },
@@ -423,6 +435,7 @@ export default {
         },
 
         async submit() {
+            const token = localStorage.getItem("token");
             const data = {
                 ...this.userFormData,
                 bookID: this.bookID,
@@ -432,9 +445,12 @@ export default {
                 data.salaryID = this.salaryID
             }
             const res = await axios({
-                url: 'http://localhost:8081/salary/add',
+                url: 'http://39.107.88.156:8080/sass_finance/salary/add',
                 method: 'post',
-                data: data
+                data: data,
+                headers:{
+                'token':token
+                }
             })
             if (res.data.code == 0) {
                 this.addFormVisible = false

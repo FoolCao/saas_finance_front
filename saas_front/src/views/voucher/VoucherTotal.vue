@@ -53,13 +53,17 @@ export default {
             this.$router.push('/voucher/CheckVoucher');
         },
         async getlist() {
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url: 'http://localhost:8081/voucher/page',
+                url: 'http://39.107.88.156:8080/sass_finance/voucher/page',
                 method: 'get',
                 params: {
                     page: this.pageno,
                     limit: this.pagesize,
                     bookId: localStorage.getItem('bookID')
+                },
+                headers:{
+                'token':token
                 }
             })
             this.list = res.data.data;
