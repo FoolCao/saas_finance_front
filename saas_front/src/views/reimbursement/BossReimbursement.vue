@@ -88,53 +88,66 @@ export default {
     methods: {
 
         async accept(row) {
+            const token = localStorage.getItem("token");
             // const data = {
                 
             // }
             const res = await axios({
-                url: 'http://localhost:8080/reimbursement/updateApproval',
+                url: 'http://39.107.88.156:8080/sass_finance/reimbursement/updateApproval',
                 method: "post",
                 params:{
                     reimbursementId: row.reimbursementId,
                     //approver:'boss',
                     approver:this.approver,
                     approvalStatus:'已通过'
+                },
+                headers:{
+                'token':token
                 }
             })
             this.getList()
         },
         async reject(row) {
+            const token = localStorage.getItem("token");
             // const data = {
             //     reimbursementId: row.reimbursementId,
             //     approver:'boss',
             //     approvalStatus:'未通过'
             // }
             const res = await axios({
-                url: 'http://localhost:8080/reimbursement/updateApproval',
+                url: 'http://39.107.88.156:8080/sass_finance/reimbursement/updateApproval',
                 method: "post",
                 params:{
                     reimbursementId: row.reimbursementId,
                     //approver:'boss',
                     approver:this.approver,
                     approvalStatus:'未通过'
+                },
+                headers:{
+                'token':token
                 }
             })
             this.getList()
         },
         async getCategoryList(){
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url:"http://localhost:8080/reimbursement/findAllCategoryList",
+                url:"http://39.107.88.156:8080/sass_finance/reimbursement/findAllCategoryList",
                 method:"get",
                 params:{
                     bookId:this.bookId,
                     //bookId:6,
+                },
+                headers:{
+                'token':token
                 }
             });
             this.categoryList=res.data.data
          },
         async getList() {
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url: "http://localhost:8080/reimbursement/findAll",
+                url: "http://39.107.88.156:8080/sass_finance/reimbursement/findAll",
                 method: "get",
                 params: {
                     ...this.params,
@@ -142,6 +155,9 @@ export default {
                     pagesize: this.pagesize,
                     bookId:this.bookId,
                     //bookId:6,
+                },
+                headers:{
+                'token':token
                 }
             });
             this.list = res.data.data.map(item => {

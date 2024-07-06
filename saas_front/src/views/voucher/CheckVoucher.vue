@@ -265,45 +265,61 @@ export default {
             this.inputValue = this.inputValue.replace(/[^0-9]/g, "").charAt(0);
         },
         async getSummaryList() {
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url: "http://localhost:8081/summary/findAll",
+                url: "http://39.107.88.156:8080/sass_finance/summary/findAll",
                 method: "get",
                 params: {
                     ...this.params,
                     pageno: this.pageno,
                     pagesize: this.pagesize,
+                },
+                headers:{
+                'token':token
                 }
             });
             this.summarylist = res.data.data.list;
         },
         async getaccountingAccountList() {
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url: "http://localhost:8081/accounting/findAll",
+                url: "http://39.107.88.156:8080/sass_finance/accounting/findAll",
                 method: "get",
                 params: {
                     ...this.params,
                     pageno: this.pageno,
                     pagesize: this.pagesize,
+                },
+                headers:{
+                'token':token
                 }
             });
             this.accountingAccountList = res.data.data.list;
         },
         async getVoucherWordList() {
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url: "http://localhost:8081/voucherWord/findAll",
+                url: "http://39.107.88.156:8080/sass_finance/voucherWord/findAll",
                 method: "get",
+                headers:{
+                'token':token
+                }
             });
             this.voucherWordlist = res.data.data
         },
         async getVoucher() {
+            const token = localStorage.getItem("token");
             const data = {
                 bookId: localStorage.getItem('bookID'),// 使用关系属性名
                 voucherId: localStorage.getItem('voucherID')
             };
             const res = await axios({
-                url: 'http://localhost:8081/voucher/findByWhere',
+                url: 'http://39.107.88.156:8080/sass_finance/voucher/findByWhere',
                 method: 'get',
                 params: data,
+                headers:{
+                'token':token
+                }
             });
             console.log(res.data.data, '---------------')
             this.VoucherList = res.data.data.map(item => {

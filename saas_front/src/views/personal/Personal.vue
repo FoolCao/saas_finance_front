@@ -135,17 +135,21 @@ export default {
         this.employeeID
     },
     mounted() {
-        this.uploadUrl = `http://localhost:8080/employee/uploadEmployeeImg?employeeID=${this.employeeID}`;
+        this.uploadUrl = `http://39.107.88.156:8080/sass_finance/employee/uploadEmployeeImg?employeeID=${this.employeeID}`;
     },
 
     methods: {
         async getList() {
+            const token = localStorage.getItem("token");
             const res = await axios({
                 method: "get",
-                url: "http://localhost:8080/employee/findByEmployeeID",
+                url: "http://39.107.88.156:8080/sass_finance/employee/findByEmployeeID",
                 params: {
                     employeeID: this.userFormData.employeeID
                 },
+                headers:{
+                'token':token
+                }
             });
             //回显用户信息
             this.userFormData.employeeDes = res.data.data.employeeDes
@@ -173,11 +177,15 @@ export default {
             return isJPG && isLt2M;
         },
         async submit() {
+            const token = localStorage.getItem("token");
             const data = { ...this.userFormData }
             const res = await axios({
-                url: 'http://localhost:8080/employee/updateEmployee',
+                url: 'http://39.107.88.156:8080/sass_finance/employee/updateEmployee',
                 method: 'post',
-                data: data
+                data: data,
+                headers:{
+                'token':token
+                }
             })
             console.log(res.data.code)
             if (res.data.code === 200) {

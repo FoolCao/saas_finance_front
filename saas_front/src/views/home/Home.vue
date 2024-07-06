@@ -137,14 +137,18 @@ export default {
 
 
     async getCollectionDataList() {
+      const token = localStorage.getItem('token');
       const res = await axios({
-        url: 'http://localhost:8081/voucher/voucher',
+        url: 'http://39.107.88.156:8080/sass_finance/voucher/voucher',
         method: 'get',
         params: {
           pageno: this.pageno,
           pagesize: this.pagesize,
           voucherWord: '收',
           bookID: localStorage.getItem('bookID')
+        },
+        headers:{
+          'token':token
         }
       });
 
@@ -171,14 +175,18 @@ export default {
     },
 
     async getPayDataList() {
+      const token = localStorage.getItem('token');
       const res = await axios({
-        url: 'http://localhost:8081/voucher/voucher',
+        url: 'http://39.107.88.156:8080/sass_finance/voucher/voucher',
         method: 'get',
         params: {
           pageno: this.pageno,
           pagesize: this.pagesize,
           voucherWord: '付',
           bookID: localStorage.getItem('bookID')
+        },
+        headers:{
+          'token':token
         }
       });
 
@@ -206,15 +214,19 @@ export default {
 
     // 计算应收账款
     async getPaymentList() {
+      const token = localStorage.getItem('token');
       const currentYearMonth = dayjs().format('YYYY-MM');
       const res = await axios({
-        url: 'http://localhost:8081/voucher/voucher',
+        url: 'http://39.107.88.156:8080/sass_finance/voucher/voucher',
         method: 'get',
         params: {
           pageno: this.pageno,
           pagesize: this.pagesize,
           voucherWord: '付',
           bookID: localStorage.getItem('bookID')
+        },
+        headers:{
+          'token':token
         }
       });
       // 处理数据：将 cime 格式化为 'YYYY-MM' 的形式
@@ -241,15 +253,19 @@ export default {
 
     // 计算应付账款
     async getCollectionList() {
+      const token = localStorage.getItem('token');
       const currentYearMonth = dayjs().format('YYYY-MM');
       const res = await axios({
-        url: 'http://localhost:8081/voucher/voucher',
+        url: 'http://39.107.88.156:8080/sass_finance/voucher/voucher',
         method: 'get',
         params: {
           pageno: this.pageno,
           pagesize: this.pagesize,
           voucherWord: '收',
           bookID: localStorage.getItem('bookID')
+        },
+        headers:{
+          'token':token
         }
       })
       this.collectionList = res.data.data.map(item => ({

@@ -116,10 +116,14 @@ export default {
 
   methods: {
     async getList() {
+      const token = localStorage.getItem("token");
             const res = await axios({
                 method: "post",
-                url: "http://localhost:8080/role/findAll",
-                data: this.params
+                url: "http://39.107.88.156:8080/sass_finance/role/findAll",
+                data: this.params,
+                headers:{
+                'token':token
+                }
             }); 
             console.log(res)
             this.list = res.data.data;
@@ -168,15 +172,19 @@ export default {
 
     //新增或修改固定资产
     async submit() {
+      const token = localStorage.getItem("token");
       // 拷贝userFormData到data
       const data = { ...this.userFormData }
       // 修改的时候需要把id带过去
       if (this.actionType === 'edit') {
         data.roleID = this.roleID
         const res = await axios({
-        url: 'http://localhost:8080/role/update',
+        url: 'http://39.107.88.156:8080/sass_finance/role/update',
         method: 'post',
-        data: data
+        data: data,
+                headers:{
+                'token':token
+                }
       })
       this.dialogFormVisible = false
       this.getList()
@@ -184,9 +192,12 @@ export default {
       //新增不带id
       else{
         const res = await axios({
-        url: 'http://localhost:8080/role/insert',
+        url: 'http://39.107.88.156:8080/sass_finance/role/insert',
         method: 'post',
-        data: data
+        data: data,
+                headers:{
+                'token':token
+                }
       })
       this.dialogFormVisible = false
       this.getList()
@@ -195,14 +206,17 @@ export default {
     },
     //删除
     async removeFixedasset(id) {
-
+      const token = localStorage.getItem("token");
       const res = await axios({
-        url: 'http://localhost:8080/role/deleteRoleById',
+        url: 'http://39.107.88.156:8080/sass_finance/role/deleteRoleById',
         method: 'post',
         // data一定是个对象，不能直接把id给data，把id变成一个对象给到data
         params: {
           roleID: id
-        }
+        },
+                headers:{
+                'token':token
+                }
       })
       this.getList()
     },

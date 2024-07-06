@@ -252,22 +252,27 @@ export default {
             this.curState = row.approvalStatus
         },
         async getCategoryList(){
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url:"http://localhost:8080/reimbursement/findAllCategoryList",
+                url:"http://39.107.88.156:8080/sass_finance/reimbursement/findAllCategoryList",
                 method:"get",
                 params:{
                     bookId:this.bookId,
                     //bookId:6,
+                },
+                headers:{
+                'token':token
                 }
             });
             this.categoryList=res.data.data
          },
         async getList() {
+            const token = localStorage.getItem('token');
             const formattedParams = {
                 ...this.params,
                };
             const res = await axios({
-                url: "http://localhost:8080/reimbursement/findAll",
+                url: "http://39.107.88.156:8080/sass_finance/reimbursement/findAll",
                 method: "get",
                 params: {
                     pageno: this.pageno,
@@ -278,6 +283,9 @@ export default {
                     ...formattedParams
                     //employeeID: localStorage.getItem('employeeID')
                 },
+                headers:{
+                'token':token
+                }
             });
              //console.log(res)
             //返回的数据进行时间格式转换
@@ -313,6 +321,7 @@ export default {
         },
         //修改保存按钮
         async submit() {
+            const token = localStorage.getItem("token");
             const data = {
                 amount:this.userFormData.amount,
                 category:this.userFormData.category,
@@ -325,9 +334,12 @@ export default {
             }
             console.log(data)
             const res = await axios({
-                url: "http://localhost:8080/reimbursement/updateReimbursement",
+                url: "http://39.107.88.156:8080/sass_finance/reimbursement/updateReimbursement",
                 method: "post",
-                data: data
+                data: data,
+                headers:{
+                'token':token
+                }
             })
             if(res.code==200){
                 this.$notify({
@@ -345,6 +357,7 @@ export default {
         },
         //新增保存按钮
         async addsubmit() {
+            const token = localStorage.getItem("token");
             const data = {
                 ...this.userFormData,
                 createTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
@@ -352,9 +365,12 @@ export default {
                 bookId: this.bookId
             }
             const res = await axios({
-                url: "http://localhost:8080/reimbursement/add",
+                url: "http://39.107.88.156:8080/sass_finance/reimbursement/add",
                 method: "post",
-                data: data
+                data: data,
+                headers:{
+                'token':token
+                }
             })
             if(res.code==200){
                 this.$notify({

@@ -183,7 +183,7 @@ export default {
         async getList() {
           const token = localStorage.getItem("token");
             const res = await axios({
-                url: "http://localhost:8081/accumulation/list",
+                url: "http://39.107.88.156:8080/sass_finance/accumulation/list",
                 method: "get",
                 params: {
                     page: this.pageno,
@@ -234,13 +234,12 @@ export default {
         this.addshow = false
       },
       async out(row) {
-
+        const token = localStorage.getItem("token");
           const data = {
             id: row.id,
           }
-          const token = localStorage.getItem("token");
             const res = await axios({
-              url: "http://localhost:8081/accumulation/updateStatus",
+              url: "http://39.107.88.156:8080/sass_finance/accumulation/updateStatus",
               method: "post",
               params: data, 
                 headers: {
@@ -250,12 +249,12 @@ export default {
             this.getList();
       },
       async submit() {
+        const token = localStorage.getItem("token");
         const data = {
           ...this.userFormData,
         }
-        const token = localStorage.getItem("token");
         const res = await axios({
-          url: "http://localhost:8081/accumulation/update",
+          url: "http://39.107.88.156:8080/sass_finance/accumulation/update",
           method: "post",
           data: data, 
                 headers: {
@@ -266,12 +265,12 @@ export default {
         this.show = false
       },
       async addsubmit() {
+        const token = localStorage.getItem("token");
         const data = {
           ...this.userFormData
         }
-        const token = localStorage.getItem("token");
         const res = await axios({
-          url: "http://localhost:8081/accumulation/add",
+          url: "http://39.107.88.156:8080/sass_finance/accumulation/add",
           method: "post",
           data: data, 
                 headers: {

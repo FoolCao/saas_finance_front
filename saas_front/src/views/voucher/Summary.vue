@@ -120,13 +120,17 @@ export default {
     },
     methods: {
         async getList() {
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url: "http://localhost:8081/summary/page",
+                url: "http://39.107.88.156:8080/sass_finance/summary/page",
                 method: "get",
                 params: {
                     ...this.params,
                     page: this.pageno,
                     limit: this.pagesize,
+                },
+                headers:{
+                'token':token
                 }
             });
             this.list = res.data.data;
@@ -150,7 +154,7 @@ export default {
             this.summaryId = row.summaryId
         },
         async out(row) {
-
+            const token = localStorage.getItem("token");
             if (row.isDefault === '是') {
                 // 如果 isDefault 为 "是"，不执行删除操作
                 this.$message.warning('不能删除默认项');
@@ -160,22 +164,29 @@ export default {
                 }
 
                 const res = await axios({
-                    url: "http://localhost:8081/summary/delete",
+                    url: "http://39.107.88.156:8080/sass_finance/summary/delete",
                     method: "delete",
-                    data: data
+                    data: data,
+                headers:{
+                'token':token
+                }
                 })
                 this.getList()
             }
         },
         async submit() {
+            const token = localStorage.getItem("token");
             const data = {
                 summaryId: this.summaryId,
                 ...this.userFormData
             }
             const res = await axios({
-                url: "http://localhost:8081/summary/update",
+                url: "http://39.107.88.156:8080/sass_finance/summary/update",
                 method: "put",
-                data: data
+                data: data,
+                headers:{
+                'token':token
+                }
             })
             this.getList()
             this.show = false
@@ -185,13 +196,17 @@ export default {
             this.addshow = false
         },
         async addsubmit() {
+            const token = localStorage.getItem("token");
             const data = {
                 ...this.userFormData
             }
             const res = await axios({
-                url: "http://localhost:8081/summary/add",
+                url: "http://39.107.88.156:8080/sass_finance/summary/add",
                 method: "post",
-                data: data
+                data: data,
+                headers:{
+                'token':token
+                }
             })
             this.getList()
             this.addshow = false

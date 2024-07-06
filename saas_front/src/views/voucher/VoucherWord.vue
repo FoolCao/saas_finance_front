@@ -129,12 +129,16 @@ export default {
     },
     methods: {
         async getList() {
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url: "http://localhost:8081/voucherWord/page",
+                url: "http://39.107.88.156:8080/sass_finance/voucherWord/page",
                 method: "get",
                 params: {
                     page: 1,
                     limit: 5,
+                },
+                headers:{
+                'token':token
                 }
             });
             this.list = res.data.data
@@ -147,7 +151,7 @@ export default {
             this.voucherWordId = row.voucherWordId
         },
         async out(row) {
-
+            const token = localStorage.getItem("token");
             if (row.isDefault === '是') {
                 // 如果 isDefault 为 "是"，不执行删除操作
                 this.$message.warning('不能删除默认项');
@@ -156,9 +160,12 @@ export default {
                     id: row.voucherWordId,
                 }
                 const res = await axios({
-                    url: "http://localhost:8081/voucherWord/delete",
+                    url: "http://39.107.88.156:8080/sass_finance/voucherWord/delete",
                     method: "delete",
-                    params: data
+                    params: data,
+                headers:{
+                'token':token
+                }
                 })
                 this.getList()
             }
@@ -166,15 +173,18 @@ export default {
         },
 
         async submit() {
-
+            const token = localStorage.getItem("token");
             const data = {
                 voucherWordId: this.voucherWordId,
                 ...this.userFormData
             }
             const res = await axios({
-                url: "http://localhost:8081/voucherWord/update",
+                url: "http://39.107.88.156:8080/sass_finance/voucherWord/update",
                 method: "put",
-                data: data
+                data: data,
+                headers:{
+                'token':token
+                }
             })
             this.getList()
             this.show = false
@@ -184,13 +194,17 @@ export default {
             this.addshow = false
         },
         async addsubmit() {
+            const token = localStorage.getItem("token");
             const data = {
                 ...this.userFormData
             }
             const res = await axios({
-                url: "http://localhost:8081/voucherWord/add",
+                url: "http://39.107.88.156:8080/sass_finance/voucherWord/add",
                 method: "post",
-                data: data
+                data: data,
+                headers:{
+                'token':token
+                }
             })
             this.getList()
             this.addshow = false

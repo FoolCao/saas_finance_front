@@ -86,6 +86,7 @@ export default {
 
     methods: {
         async getList() {
+            const token = localStorage.getItem("token");
 
             const formattedParams = {
                 ...this.params,
@@ -95,7 +96,7 @@ export default {
 
             const res = await axios({
                 method: "get",
-                url: "http://localhost:8080/salary/findAllAndEmployee",
+                url: "http://39.107.88.156:8080/sass_finance/salary/findAllAndEmployee",
                 params: {
                     pageno: this.pageno,
                     pagesize: this.pagesize,
@@ -103,6 +104,9 @@ export default {
                     ...formattedParams,
                     bookId: this.bookID
                 },
+                headers:{
+                'token':token
+                }
             });
             // 修改日期格式
             this.list = res.data.data.map(item => {

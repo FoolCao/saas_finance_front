@@ -209,14 +209,19 @@ export default {
     },
     methods: {
         async updateApprovalStatus(row) {
+            const token = localStorage.getItem("token");
             const data = {
                 reimbursementID: row.reimbursementID,
                 isToVoucher: "是"
             }
             const res = await axios({
-                url: "http://localhost:8080/reimbursement/updateReimbursementToVarch",
+            
+                url: "http://39.107.88.156:8080/sass_finance/reimbursement/updateReimbursementToVarch",
                 method: "post",
-                data: data
+                data: data,
+                headers:{
+                'token':token
+                }
             })
             // this.getList()
             localStorage.setItem('summary', this.summary)
@@ -231,12 +236,16 @@ export default {
         },
         // 查询全部的账户
          async getSubjectAccountNameList(){
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url:"http://localhost:8081/bookkeeping/subjectAccountNameList",
+                url:"http://39.107.88.156:8080/sass_finance/bookkeeping/subjectAccountNameList",
                 method:"get",
                 params:{
                     bookId:this.bookId,
                     //bookId:6,
+                },
+                headers:{
+                'token':token
                 }
             });
             console.log(res.data.data)
@@ -244,56 +253,73 @@ export default {
          },
          // 查询全部的摘要
          async getSummaryList(){
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url:"http://localhost:8081/summary/findAll",
+                url:"http://39.107.88.156:8080/sass_finance/summary/findAll",
                 method:"get",
                 params:{
                     bookId:this.bookId,
                     //bookId:6,
+                },
+                headers:{
+                'token':token
                 }
             });
             this.summaryList=res.data.data
          },
          // 查询全部的收支类别
          async getClassificationList(){
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url:"http://localhost:8081/bookkeeping/classificationList",
+                url:"http://39.107.88.156:8080/sass_finance/bookkeeping/classificationList",
                 method:"get",
                 params:{
                     bookId:this.bookId,
                     //bookId:6,
+                },
+                headers:{
+                'token':token
                 }
             });
             this.classificationList=res.data.data
          },
          // 查询全部的制单人
          async getMakerList(){
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url:"http://localhost:8081/bookkeeping/makerList",
+                url:"http://39.107.88.156:8080/sass_finance/bookkeeping/makerList",
                 method:"get",
                 params:{
                     bookId:this.bookId,
                     //bookId:6,
+                },
+                headers:{
+                'token':token
                 }
             });
             this.makerList=res.data.data
          },
          // 查询全部的会计科目
          async getAccountingSubject(){
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url:"http://localhost:8081/accounting/findAll",
+                url:"http://39.107.88.156:8080/sass_finance/accounting/findAll",
                 method:"get",
                 params:{
                     bookId:this.bookId,
                     //bookId:6,
+                },
+                headers:{
+                'token':token
                 }
             });
             this.accountingSubjectList=res.data.data
          },
          //分页查询
         async getList() {
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url: "http://localhost:8081/bookkeeping/list",
+                url: "http://39.107.88.156:8080/sass_finance/bookkeeping/list",
                 method: "get",
                 params: {
                     ...this.params,
@@ -301,6 +327,9 @@ export default {
                     pagesize: this.pagesize,
                     bookId:this.bookId,
                     //bookId:6,
+                },
+                headers:{
+                'token':token
                 }
             });
             this.list = res.data.data.map(item => {
@@ -339,12 +368,16 @@ export default {
         },
         //新增或修改固定资产
         async submit() {
+            const token = localStorage.getItem("token");
         // 拷贝userFormData到data
         const data = { ...this.userFormData }
             const res = await axios({
-            url: 'http://localhost:8081/bookkeeping/insert',
+            url: 'http://39.107.88.156:8080/sass_finance/bookkeeping/insert',
             method: 'post',
-            data: data
+            data: data,
+                headers:{
+                'token':token
+                }
         })
         this.addDialogFormVisible = false
         this.getList()

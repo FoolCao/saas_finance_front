@@ -112,13 +112,17 @@ export default {
             this.statue2 = true;
         },
         async getShouVoucherList() {
+            const token = localStorage.getItem("token");
             const currentYearMonth = dayjs().format('YYYY-MM');
             const res = await axios({
-                url: "http://localhost:8080/voucher/voucher",
+                url: "http://39.107.88.156:8080/sass_finance/voucher/voucher",
                 method: "get",
                 params: {
                     bookID: localStorage.getItem('bookID'),
                     voucherWord: '收'
+                },
+                headers:{
+                'token':token
                 }
             })
             this.VAT = res.data.data.map(item => ({
@@ -139,13 +143,17 @@ export default {
         },
 
         async getFuVoucherList() {
+            const token = localStorage.getItem("token");
             const currentYearMonth = dayjs().format('YYYY-MM');
             const res = await axios({
-                url: "http://localhost:8080/voucher/voucher",
+                url: "http://39.107.88.156:8080/sass_finance/voucher/voucher",
                 method: "get",
                 params: {
                     bookID: localStorage.getItem('bookID'),
                     voucherWord: '付'
+                },
+                headers:{
+                'token':token
                 }
             })
             this.VAT = res.data.data.map(item => ({

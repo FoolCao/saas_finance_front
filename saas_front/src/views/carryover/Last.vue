@@ -101,7 +101,7 @@ export default {
       console.log(this.value2[1])
       const res = await axios({
         method: "get",
-        url: "http://localhost:8081/log/getShouVoucherList",
+        url: "http://39.107.88.156:8080/sass_finance/log/getShouVoucherList",
         params: {
           bookID: this.bookID,
           time1: this.value2[0],

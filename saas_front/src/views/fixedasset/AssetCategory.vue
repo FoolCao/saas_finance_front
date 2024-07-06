@@ -200,14 +200,18 @@ export default {
     },
     methods: {
         async DepreciationMethodgetList() {
+            const token = localStorage.getItem("token");
             const res = await axios({
                 method: "get",
-                url: "http://localhost:8081/depreciationType/page",
+                url: "http://39.107.88.156:8080/sass_finance/depreciationType/page",
                 params: {
                     page: this.page,
                     limit: this.limit,
                     ...this.params
                 },
+                headers:{
+                'token':token
+                }
             });
             this.AssetCategoryMethodList = res.data.data
             this.total = res.data.count
@@ -215,9 +219,13 @@ export default {
 
         },
         async getMethod() {
+            const token = localStorage.getItem("token");
             const res = await axios({
                 method: "get",
-                url: "http://localhost:8081/depreciationMethod/findAll",
+                url: "http://39.107.88.156:8080/sass_finance/depreciationMethod/findAll",
+                headers:{
+                'token':token
+                }
             });
             this.methodList = res.data.data
             console.log(this.methodList)
@@ -238,14 +246,17 @@ export default {
             this.DepreciationMethodgetList()
         },
         async addsubmit() {
-
+            const token = localStorage.getItem("token");
             const data = {
                 ...this.formData
             }
             const res = await axios({
-                url: "http://localhost:8081/depreciationType/add",
+                url: "http://39.107.88.156:8080/sass_finance/depreciationType/add",
                 method: "post",
-                data: data
+                data: data,
+                headers:{
+                'token':token
+                }
             })
             this.DepreciationMethodgetList()
             this.addshow = false
@@ -254,6 +265,7 @@ export default {
             this.addshow = true
         },
         async remove(row) {
+            const token = localStorage.getItem("token");
             if (row.statue === '启用') {
                 this.$message.warning('不能删除启用项，请先设置为禁用');
             } else {
@@ -263,9 +275,11 @@ export default {
                     type: 'warning'
                 }).then(() => {
                     axios({
-                        url: "http://localhost:8081/depreciationType/delete/?id=" + row.id,
+                        url: "http://39.107.88.156:8080/sass_finance/depreciationType/delete/?id=" + row.id,
                         method: "delete",
-
+                headers:{
+                'token':token
+                }
                     })
                     this.DepreciationMethodgetList()
                     this.$message({
@@ -293,14 +307,18 @@ export default {
             this.id = row.id
         },
         async updatesubmit() {
+            const token = localStorage.getItem("token");
             const data = {
                 id: this.id,
                 ...this.formData
             }
             const res = await axios({
-                url: "http://localhost:8081/depreciationType/update",
+                url: "http://39.107.88.156:8080/sass_finance/depreciationType/update",
                 method: "put",
-                data: data
+                data: data,
+                headers:{
+                'token':token
+                }
             })
             this.DepreciationMethodgetList()
             this.updateshow = false
@@ -315,6 +333,7 @@ export default {
             console.log(this.multipleSelection); // 输出multipleSelection数组，包含所有选中行的id
         },
         batchdelete() {
+            const token = localStorage.getItem('token');
             const data = {
                 ids: this.multipleSelection,
             }
@@ -325,9 +344,12 @@ export default {
                 type: 'warning'
             }).then(() => {
                 axios({
-                    url: "http://localhost:8081/depreciationType/delete/batch",
+                    url: "http://39.107.88.156:8080/sass_finance/depreciationType/delete/batch",
                     method: "delete",
                     data: data,
+                headers:{
+                'token':token
+                }
                 })
                 this.DepreciationMethodgetList()
                 this.$message({

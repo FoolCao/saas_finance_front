@@ -133,24 +133,32 @@ export default {
     methods: {
         // 查询全部的会计科目
          async getAccountingSubject(){
+            const token = localStorage.getItem('token');
             const res = await axios({
-                url:"http://localhost:8081/accounting/findAll",
+                url:"http://39.107.88.156:8080/sass_finance/accounting/findAll",
                 method:"get",
                 params:{
                     bookId:this.bookId,
                     //bookId:6,
+                },
+                headers:{
+                'token':token
                 }
             });
             this.accountingSubjectList=res.data.data
          },
         async getList() {
+            const token = localStorage.getItem("token");
             const res = await axios({
-                url: "http://localhost:8081/subjectAccount/page",
+                url: "http://39.107.88.156:8080/sass_finance/subjectAccount/page",
                 method: "get",
                 params: {
                     page: this.pageno,
                     limit: this.pagesize,
                     //bookId:this.bookId,
+                },
+                headers:{
+                'token':token
                 }
             });
             this.list = res.data.data.map(item => {
@@ -201,13 +209,17 @@ export default {
     },
     //新增或修改固定资产
     async submit() { 
+        const token = localStorage.getItem("token");
         // 拷贝userFormData到data
         const data = { ...this.userFormData }
         if (this.actionType === 'add') {
             const res = await axios({
-            url: 'http://localhost:8081/subjectAccount/add',
+            url: 'http://39.107.88.156:8080/sass_finance/subjectAccount/add',
             method: 'post',
-            data: data
+            data: data,
+                headers:{
+                'token':token
+                }
         })
         this.addDialogFormVisible = false
         this.getList()
@@ -215,15 +227,19 @@ export default {
     },
     //修改
     async commit() {
+        const token = localStorage.getItem("token");
       // 拷贝userFormData到data
       const data = { ...this.userFormData }
       // 修改的时候需要把id带过去
       if (this.actionType === 'edit') {
         data.id = this.id
         const res = await axios({
-        url: 'http://localhost:8081/subjectAccount/update',
+        url: 'http://39.107.88.156:8080/sass_finance/subjectAccount/update',
         method: 'post',
-        data: data
+        data: data,
+                headers:{
+                'token':token
+                }
       })
       this.editDialogFormVisible = false
       this.getList()
@@ -231,13 +247,17 @@ export default {
     },
     //删除
     async removeFixedasset(id) {
+        const token = localStorage.getItem("token");
       const res = await axios({
-        url: 'http://localhost:8081/subjectAccount/delete',
+        url: 'http://39.107.88.156:8080/sass_finance/subjectAccount/delete',
         method: 'get',
         // data一定是个对象，不能直接把id给data，把id变成一个对象给到data
         params: {
           id: id
-        }
+        },
+                headers:{
+                'token':token
+                }
       })
       console.log(res.data.code)
       this.getList()

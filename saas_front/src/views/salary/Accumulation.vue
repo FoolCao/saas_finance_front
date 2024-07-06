@@ -281,7 +281,7 @@ export default {
                 isToVoucher: "是"
             }
             const res = await axios({
-                url: "http://localhost:8080/salary/update",
+                url: "http://39.107.88.156:8080/sass_finance/salary/update",
                 method: "post",
                 data: data, 
                 headers: {
@@ -301,15 +301,15 @@ export default {
         },
 
         async getList() {
+            const token = localStorage.getItem("token");
             // const formattedParams = {
             //     ...this.params,
             //     assetName: this.params.assetName ? dayjs(this.params.assetName).format('YYYY-MM-DD HH:mm:ss') : null,
             //     brandModel: this.params.brandModel ? dayjs(this.params.brandModel).format('YYYY-MM-DD HH:mm:ss') : null,
             // };
-            const token = localStorage.getItem("token");
             const res = await axios({
                 method: "get",
-                url: "http://localhost:8081/accumulate/list",
+                url: "http://39.107.88.156:8080/sass_finance/accumulate/list",
                 params: {
                     page: this.pageno,
                     limit: this.pagesize,
@@ -376,7 +376,7 @@ export default {
             // };
             const res = await axios({
                 method: "get",
-                url: "http://localhost:8081/accumulate/detail",
+                url: "http://39.107.88.156:8080/sass_finance/accumulate/detail",
                 params: {
                    id: row.id
                 }, 
@@ -436,6 +436,7 @@ export default {
         },
 
         async submit() {
+            const token = localStorage.getItem("token");
             const data = {
                 ...this.userFormData,
                 bookID: this.bookID,
@@ -444,9 +445,8 @@ export default {
             if (this.actionType === 'edit') {
                 data.salaryID = this.salaryID
             }
-            const token = localStorage.getItem("token");
             const res = await axios({
-                url: 'http://localhost:8081/salary/add',
+                url: 'http://39.107.88.156:8080/sass_finance/salary/add',
                 method: 'post',
                 data: data, 
                 headers: {

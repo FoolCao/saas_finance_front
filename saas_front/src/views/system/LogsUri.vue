@@ -214,9 +214,9 @@ export default {
 
   methods: {
     async getList() {
-
+      const token = localStorage.getItem("token");
       const res = await axios({
-        url: "http://localhost:8081/log/list",
+        url: "http://39.107.88.156:8080/sass_finance/log/list",
         method: "get",
         params: {
           page: this.pageno,
@@ -225,6 +225,9 @@ export default {
           startTime: this.value2[0],
           overTime: this.value2[1]
         },
+                headers:{
+                'token':token
+                }
       });
       // 修改日期格式
       this.list = res.data.data.map(item => {
@@ -273,37 +276,48 @@ export default {
       this.addshow = false
     },
     async out(row) {
-
+      const token = localStorage.getItem("token");
       const data = {
         id: row.id,
       }
       const res = await axios({
-        url: "http://localhost:8081/accumulation/updateStatus",
+        url: "http://39.107.88.156:8080/sass_finance/accumulation/updateStatus",
         method: "post",
-        params: data
+        params: data,
+                headers:{
+                'token':token
+                }
       })
       this.getList();
     },
     async submit() {
+      const token = localStorage.getItem("token");
       const data = {
         ...this.userFormData,
       }
       const res = await axios({
-        url: "http://localhost:8081/accumulation/update",
+        url: "http://39.107.88.156:8080/sass_finance/accumulation/update",
         method: "post",
-        data: data
+        data: data,
+                headers:{
+                'token':token
+                }
       })
       this.getList()
       this.show = false
     },
     async addsubmit() {
+      const token = localStorage.getItem("token");
       const data = {
         ...this.userFormData
       }
       const res = await axios({
-        url: "http://localhost:8081/accumulation/add",
+        url: "http://39.107.88.156:8080/sass_finance/accumulation/add",
         method: "post",
-        data: data
+        data: data,
+                headers:{
+                'token':token
+                }
       })
       this.getList()
       this.addshow = false
