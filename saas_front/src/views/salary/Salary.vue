@@ -255,7 +255,9 @@ export default {
     },
     created() {
         this.bookID = localStorage.getItem('bookID');
-        this.getList()
+        this.getList(),
+        console.log(localStorage.getItem("token"))
+        
     },
     methods: {
 
@@ -346,6 +348,7 @@ export default {
             const res = await axios({
                 method: "get",
                 url: "http://localhost:8081/salary/list",
+                header: localStorage.getItem("token"),
                 params: {
                     page: this.pageno,
                     limit: this.pagesize,

@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunksell_manage"]=self["webpackChunksell_manage"]||[]).push([[273],{97273:function(e,n,t){t.r(n),t.d(n,{default:function(){return c}});var a=function(){var e=this;e._self._c;return e._m(0)},r=[function(){var e=this,n=e._self._c;return n("div",[e._v(" 404~~，自己优化 "),n("a",{attrs:{href:"#/home"}},[e._v("首页")])])}],u={},l=u,s=t(1001),f=(0,s.Z)(l,a,r,!1,null,"7a07e65a",null),c=f.exports}}]);
+//# sourceMappingURL=273.c79435fa.js.map
