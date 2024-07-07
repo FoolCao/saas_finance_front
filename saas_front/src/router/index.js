@@ -175,6 +175,30 @@ export const menuRoutes = [
 
     ]
   },
+  //账簿管理
+  {
+    path: '/accountBooks',
+    component: () => import('@/layout/Layout.vue'),
+    meta: { title: '账簿', menu: true, icon: 'el-icon-bank-card'},
+    children: [
+      {
+        path: '/accountBooks/DetailedAccount',
+        meta: { title: '明细账'},
+        component: () => import('@/views/accountBooks/DetailedAccount.vue'),
+      },
+      {
+        path: '/accountBooks/AccountSummary',
+        meta: { title: '科目汇总'},
+        component: () => import('@/views/accountBooks/AccountSummary.vue'),
+      },
+      {
+        path: '/accountBooks/ChronologicalAccount',
+        meta: { title: '序时账'},
+        component: () => import('@/views/accountBooks/ChronologicalAccount.vue'),
+      },
+      
+    ]
+  },
 
   /* 报销管理 */
   //财务报销管理
