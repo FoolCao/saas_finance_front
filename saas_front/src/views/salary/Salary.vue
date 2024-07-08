@@ -38,7 +38,7 @@
                 </el-row>
             </div>
             <div>
-                <el-upload class="upload-demo" ref="upload" action="http://39.107.88.156:8080/sass_finance/salary/import"
+                <el-upload class="upload-demo" ref="upload" action="http://localhost:8081/salary/import"
                     :on-preview="handlePreview" :on-remove="handleRemove" :file-list="file" :auto-upload="false">
                     <el-button slot="trigger" size="small" type="">选取文件</el-button>
                     <el-button style="margin-left: 10px;" size="small" type="primary"
@@ -303,8 +303,10 @@ export default {
             const token = localStorage.getItem("token");
             try {
                 const token = localStorage.getItem("token");
+                const bookId = localStorage.getItem("bookID");
                 const res = await axios({
                     url: "http://39.107.88.156:8080/sass_finance/salary/export",
+                    // url: "http://localhost:8081/salary/export",
                     method: "get",
                     responseType: 'blob', // 告诉axios我们期望接收一个blob
                     params: {
@@ -315,7 +317,8 @@ export default {
                         phone: this.phone
                     },
                 headers:{
-                'token':token
+                'token':token,
+                "bookId":bookId
                 }
                 });
 
@@ -348,10 +351,11 @@ export default {
             //     brandModel: this.params.brandModel ? dayjs(this.params.brandModel).format('YYYY-MM-DD HH:mm:ss') : null,
             // };
             const token = localStorage.getItem("token");
+            const bookId = localStorage.getItem("bookID");
             const res = await axios({
                 method: "get",
                 url: "http://39.107.88.156:8080/sass_finance/salary/list",
-                header: localStorage.getItem("token"),
+                // url: "http://localhost:8081/salary/list",
                 params: {
                     page: this.pageno,
                     limit: this.pagesize,
@@ -359,12 +363,13 @@ export default {
                     adminId: this.adminId,
                     time1: this.value2[0],
                     time2: this.value2[1],
-                    phone: this.phone
+                    phone: this.phone,
                 },
                 headers:{
-                'token':token
+                'token':token,
+                "bookId":bookId
                 }
-            });
+            }); 
             // 修改日期格式
             this.list = res.data.data.map(item => {
                 return {
