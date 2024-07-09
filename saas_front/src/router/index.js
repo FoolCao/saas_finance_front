@@ -20,19 +20,19 @@ const commonRoutes = [
 /* 这里定义菜单栏的路由 */
 export const menuRoutes = [
   // 首页
-  {
-    path: '/home',
-    component: () => import('@/layout/Layout.vue'),
-    meta: { title: '首页', menu: true, icon: 'el-icon-s-platform'},
-    children: [
-      {
-        // 等价于取父亲的path
-        path: '',
-        meta: { title: '首页', menu: true },
-        component: () => import('@/views/home/Home.vue')
-      }
-    ]
-  },
+  // {
+  //   path: '/home',
+  //   component: () => import('@/layout/Layout.vue'),
+  //   meta: { title: '首页', menu: true, icon: 'el-icon-s-platform'},
+  //   children: [
+  //     {
+  //       // 等价于取父亲的path
+  //       path: '',
+  //       meta: { title: '首页', menu: true },
+  //       component: () => import('@/views/home/Home.vue')
+  //     }
+  //   ]
+  // },
 
   //凭证管理
   {
@@ -124,19 +124,19 @@ export const menuRoutes = [
   //   ]
   // },
   // 个人中心
-  {
-    path: '/personal',
-    component: () => import('@/layout/Layout.vue'),
-    meta: { title: '个人中心', menu: true, icon: 'el-icon-user' },
-    children: [
-      {
-        // 等价于取父亲的path
-        path: '',
-        meta: { title: '个人中心', menu: true },
-        component: () => import('@/views/personal/Personal.vue')
-      }
-    ]
-  },
+  // {
+  //   path: '/personal',
+  //   component: () => import('@/layout/Layout.vue'),
+  //   meta: { title: '个人中心', menu: true, icon: 'el-icon-user' },
+  //   children: [
+  //     {
+  //       // 等价于取父亲的path
+  //       path: '',
+  //       meta: { title: '个人中心', menu: true },
+  //       component: () => import('@/views/personal/Personal.vue')
+  //     }
+  //   ]
+  // },
   /* 工资管理 */
   //财务端工资管理
   {
@@ -162,19 +162,19 @@ export const menuRoutes = [
     ]
   },
   //员工工资管理
-  {
-    path: '/PersonalSalary',
-    component: () => import('@/layout/Layout.vue'),
-    meta: { title: '员工工资', menu: true, icon: 'el-icon-bank-card'},
-    children: [
-      {
-        path: '',
-        meta: { title: '工资表', menu: true },
-        component: () => import('@/views/salary/PersonalSalary.vue'),
-      },
+  // {
+  //   path: '/PersonalSalary',
+  //   component: () => import('@/layout/Layout.vue'),
+  //   meta: { title: '员工工资', menu: true, icon: 'el-icon-bank-card'},
+  //   children: [
+  //     {
+  //       path: '',
+  //       meta: { title: '工资表', menu: true },
+  //       component: () => import('@/views/salary/PersonalSalary.vue'),
+  //     },
 
-    ]
-  },
+  //   ]
+  // },
   //账簿管理
   {
     path: '/accountBooks',
@@ -202,18 +202,18 @@ export const menuRoutes = [
 
   /* 报销管理 */
   //财务报销管理
-  {
-    path: '/financeReimbursement',
-    component: () => import('@/layout/Layout.vue'),
-    meta: { title: '报销管理', menu: true, icon: 'el-icon-coin'},
-    children: [
-      {
-        path: '',
-        meta: { title: '报销管理', menu: true },
-        component: () => import('@/views/reimbursement/FinanceReimbursement.vue'),
-      },
-    ]
-  },
+  // {
+  //   path: '/financeReimbursement',
+  //   component: () => import('@/layout/Layout.vue'),
+  //   meta: { title: '报销管理', menu: true, icon: 'el-icon-coin'},
+  //   children: [
+  //     {
+  //       path: '',
+  //       meta: { title: '报销管理', menu: true },
+  //       component: () => import('@/views/reimbursement/FinanceReimbursement.vue'),
+  //     },
+  //   ]
+  // },
   {
     path: '/statement',
     component: () => import('@/layout/Layout.vue'),
@@ -227,19 +227,19 @@ export const menuRoutes = [
     ]
   },
   //员工报销请求
-  {
-    path: '/personalReimbursement',
-    component: () => import('@/layout/Layout.vue'),
-    meta: { title: '用户报销', menu: true, icon: 'el-icon-bank-card'},
-    children: [
-      {
-        path: '',
-        meta: { title: '用户报销' },
-        component: () => import('@/views/reimbursement/PersonalReimbursement.vue'),
-      },
+  // {
+  //   path: '/personalReimbursement',
+  //   component: () => import('@/layout/Layout.vue'),
+  //   meta: { title: '用户报销', menu: true, icon: 'el-icon-bank-card'},
+  //   children: [
+  //     {
+  //       path: '',
+  //       meta: { title: '用户报销' },
+  //       component: () => import('@/views/reimbursement/PersonalReimbursement.vue'),
+  //     },
 
-    ]
-  },
+  //   ]
+  // },
   //老板报销审核
   {
     path: '/bossReimbursement',
